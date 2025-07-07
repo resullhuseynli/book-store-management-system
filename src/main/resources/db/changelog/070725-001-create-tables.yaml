@@ -1,0 +1,145 @@
+databaseChangeLog:
+  - changeSet:
+      id: 070725-01
+      author: Resul Huseynli
+      changes:
+
+        # 1. Create Author Table
+        - createTable:
+            tableName: authors
+            columns:
+              - column:
+                  name: author_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: author_first_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_last_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_about_url
+                  type: VARCHAR(255)
+
+        # 2. Create Publisher Table
+        - createTable:
+            tableName: publishers
+            columns:
+              - column:
+                  name: publisher_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: publisher_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+        # 3. Create Book Table
+        - createTable:
+            tableName: books
+            columns:
+              - column:
+                  name: book_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: book_title
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: book_cover_image_url
+                  type: VARCHAR(100)
+              - column:
+                  name: book_genre
+                  type: VARCHAR(50)
+              - column:
+                  name: book_price
+                  type: NUMERIC(12,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: book_amount
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: book_rating
+                  type: NUMERIC(3,1)
+              - column:
+                  name: book_page_count
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: book_created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: book_updated_at
+                  type: TIMESTAMP
+              - column:
+                  name: author_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: publisher_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+        # 4. Add FK book → author
+        - addForeignKeyConstraint:
+            constraintName: fk_book_author
+            baseTableName: books
+            baseColumnNames: author_id
+            referencedTableName: authors
+            referencedColumnNames: author_id
+            onDelete: SET NULL
+
+        # 5. Add FK book → publisher
+        - addForeignKeyConstraint:
+            constraintName: fk_book_publisher
+            baseTableName: books
+            baseColumnNames: publisher_id
+            referencedTableName: publishers
+            referencedColumnNames: publisher_id
+            onDelete: SET NULL
+
+        # 6. Create book_languages table for Enum Set<Language>
+        - createTable:
+            tableName: books_languages
+            columns:
+              - column:
+                  name: book_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: book_language
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+
+        # 7. FK book_languages → book
+        - addForeignKeyConstraint:
+            constraintName: fk_book_languages_book
+            baseTableName: books_languages
+            baseColumnNames: book_id
+            referencedTableName: books
+            referencedColumnNames: book_id
+            onDelete: SET NULL
