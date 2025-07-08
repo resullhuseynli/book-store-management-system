@@ -1,5 +1,8 @@
 package com.store.book.exception;
 
+import com.store.book.exception.exceptions.EntityContainException;
+import com.store.book.exception.exceptions.NotFoundException;
+import com.store.book.exception.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -7,7 +10,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.rmi.server.UID;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +18,7 @@ import java.util.UUID;
 import static org.springframework.http.ResponseEntity.badRequest;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler<T> {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityContainException.class)
     public ResponseEntity<ErrorResponse<String>> handleEntityContainException(EntityContainException entityContainException) {

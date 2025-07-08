@@ -1,4 +1,4 @@
-package com.store.book.exception;
+package com.store.book.exception.model;
 
 
 import lombok.Getter;

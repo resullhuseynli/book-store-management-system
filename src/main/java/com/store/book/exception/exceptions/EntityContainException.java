@@ -1,4 +1,4 @@
-package com.store.book.exception;
+package com.store.book.exception.exceptions;
 
 public class EntityContainException extends RuntimeException {
     public EntityContainException(String message) {

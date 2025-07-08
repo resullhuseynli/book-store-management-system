@@ -3,10 +3,9 @@ package com.store.book.service;
 import com.store.book.dao.AuthorDAO;
 import com.store.book.dao.dto.AuthorDtoRequest;
 import com.store.book.dao.entity.Author;
-import com.store.book.exception.EntityContainException;
-import com.store.book.exception.NotFoundException;
+import com.store.book.exception.exceptions.EntityContainException;
+import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.AuthorMapper;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
