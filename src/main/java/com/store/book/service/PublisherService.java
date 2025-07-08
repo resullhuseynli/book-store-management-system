@@ -4,6 +4,7 @@ import com.store.book.dao.PublisherDAO;
 import com.store.book.dao.dto.PublisherDtoRequest;
 import com.store.book.dao.entity.Publisher;
 import com.store.book.mapper.PublisherMapper;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PublisherService {
 
-    private final PublisherDAO  publisherDAO;
+    private final PublisherDAO publisherDAO;
     private final PublisherMapper publisherMapper;
 
     public Publisher createPublisher(PublisherDtoRequest request) {
+        getAllPublishers().forEach(publisher ->
+        {
+            if (publisher.getName().equals(request.getName()))
+                throw new EntityExistsException("Publisher with name " + request.getName() + " already exists");
+        });
         return publisherDAO.save(publisherMapper.dtoToEntity(request));
     }
 
