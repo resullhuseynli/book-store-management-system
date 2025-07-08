@@ -1,9 +1,19 @@
 package com.store.book.dao.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "authors")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Author {
 
     @Id
@@ -20,4 +30,11 @@ public class Author {
     @Column(name = "author_about_url")
     private String aboutUrl;
 
+    @CreationTimestamp
+    @Column(name = "started_at")
+    private LocalDateTime startedAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }
