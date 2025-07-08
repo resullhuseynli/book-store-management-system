@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-started-updated-columns
+      author: Resul Huseynli
+      changes:
+        - addColumn:
+            tableName: publishers
+            columns:
+              - column:
+                  name: started_at
+                  type: timestamp
+              - column:
+                  name: updated_at
+                  type: timestamp
+
+        - addColumn:
+            tableName: authors
+            columns:
+              - column:
+                  name: started_at
+                  type: timestamp
+              - column:
+                  name: updated_at
+                  type: timestamp

@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: db/changelog/070725-001-create-tables.yaml
+  - include:
+      file: db/changelog/070825-002-add-started-updated-columns.yaml
