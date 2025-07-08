@@ -9,7 +9,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -29,7 +28,7 @@ public class Book {
     @Column(name = "book_title", length = 100)
     private String title;
 
-    @Column(name = "book_cover_image_url", length = 100)
+    @Column(name = "book_cover_image_url")
     private String coverImageUrl;
 
     @Enumerated(EnumType.STRING)
