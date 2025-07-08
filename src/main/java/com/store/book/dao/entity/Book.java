@@ -3,6 +3,7 @@ package com.store.book.dao.entity;
 import com.store.book.enums.Genre;
 import com.store.book.enums.Language;
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,7 +13,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "books")
+@Builder
 public class Book {
 
     @Id
@@ -61,7 +67,7 @@ public class Book {
     )
     @Enumerated(EnumType.STRING)
     @Column(name = "book_language")
-    private Set<Language> languages = new HashSet<>();
+    private Set<Language> languages;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "publisher_id", referencedColumnName = "publisher_id")
