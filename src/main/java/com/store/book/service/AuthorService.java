@@ -4,6 +4,7 @@ import com.store.book.dao.AuthorDAO;
 import com.store.book.dao.dto.AuthorDtoRequest;
 import com.store.book.dao.entity.Author;
 import com.store.book.exception.EntityContainException;
+import com.store.book.exception.NotFoundException;
 import com.store.book.mapper.AuthorMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class AuthorService {
 
     public Author getAuthorById(Long id) {
         return authorDAO.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Author with id:" + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("Author with id:" + id + " not found"));
     }
 
     public List<Author> getAllAuthors() {

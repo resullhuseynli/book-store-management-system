@@ -3,6 +3,7 @@ package com.store.book.service;
 import com.store.book.dao.PublisherDAO;
 import com.store.book.dao.dto.PublisherDtoRequest;
 import com.store.book.dao.entity.Publisher;
+import com.store.book.exception.NotFoundException;
 import com.store.book.mapper.PublisherMapper;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,7 +30,7 @@ public class PublisherService {
 
     public Publisher getPublisherById(Long id) {
         return publisherDAO.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Publisher with id " + id + " not found!"));
+                .orElseThrow(() -> new NotFoundException("Publisher with id " + id + " not found!"));
     }
 
     public List<Publisher> getAllPublishers() {
@@ -37,15 +38,13 @@ public class PublisherService {
     }
 
     public Publisher updatePublisher(Long id, PublisherDtoRequest request) {
-        Publisher publisher = publisherDAO.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Publisher with id " + id + " not found!"));
+        Publisher publisher = getPublisherById(id);
         publisher.setName(request.getName());
         return publisherDAO.save(publisher);
     }
 
     public void deletePublisher(Long id) {
-        Publisher publisher = publisherDAO.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Publisher with id " + id + " not found!"));
+        Publisher publisher = getPublisherById(id);
         publisherDAO.delete(publisher);
     }
 }
