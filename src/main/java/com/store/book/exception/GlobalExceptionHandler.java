@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,11 @@ public class GlobalExceptionHandler {
         List<String> errors = methodArgumentNotValidException.getBindingResult().getFieldErrors()
                 .stream().map(FieldError::getDefaultMessage).toList();
         return new ResponseEntity<>(new ErrorResponse<>(UUID.randomUUID(), getErrorsMap(errors)), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<ErrorResponse<String>> handleIOException(IOException ioException) {
+        return badRequest().body(new ErrorResponse<>(UUID.randomUUID(), ioException.getMessage()));
     }
 
     private Map<String, List<String>> getErrorsMap(List<String> errors) {
