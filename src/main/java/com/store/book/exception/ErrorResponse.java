@@ -1,21 +1,23 @@
 package com.store.book.exception;
 
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.rmi.server.UID;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class ErrorResponse<T> {
 
-    private UID errorId;
+    private UUID errorId;
     private T message;
-    private final LocalDateTime timestamp =  LocalDateTime.now();
+    private final LocalDateTime timestamp = LocalDateTime.now();
 
-    public ErrorResponse(UID errorId, T message) {
+    public ErrorResponse(UUID errorId, T message) {
         this.errorId = errorId;
         this.message = message;
     }
