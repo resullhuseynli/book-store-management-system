@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 070825- update-cover-image-url-length
+      author: Resul Huseynli
+      changes:
+        - modifyDataType:
+            tableName: books
+            columnName: book_cover_image_url
+            newDataType: VARCHAR(255)
