@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: 070825-003-change-column-names
+      author: Resul Huseynli
+      changes:
+        - renameColumn:
+            tableName: authors
+            oldColumnName: started_at
+            newColumnName: created_at
+            columnDataType: timestamp
+
+        - renameColumn:
+            tableName: publishers
+            oldColumnName: started_at
+            newColumnName: created_at
+            columnDataType: timestamp
