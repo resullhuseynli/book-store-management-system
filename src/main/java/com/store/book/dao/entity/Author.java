@@ -31,8 +31,8 @@ public class Author {
     private String aboutUrl;
 
     @CreationTimestamp
-    @Column(name = "started_at")
-    private LocalDateTime startedAt;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
