@@ -1,6 +1,7 @@
 package com.store.book.exception;
 
 import com.store.book.exception.exceptions.EntityContainException;
+import com.store.book.exception.exceptions.ImageIsNotAvailableException;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.exception.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IOException.class)
     public ResponseEntity<ErrorResponse<String>> handleIOException(IOException ioException) {
         return badRequest().body(new ErrorResponse<>(UUID.randomUUID(), ioException.getMessage()));
+    }
+
+    @ExceptionHandler(ImageIsNotAvailableException.class)
+    public ResponseEntity<ErrorResponse<String>> handleImageIsNotAvailableException(ImageIsNotAvailableException imageIsNotAvailableException) {
+        return badRequest().body(new ErrorResponse<>(UUID.randomUUID(), imageIsNotAvailableException.getMessage()));
     }
 
     private Map<String, List<String>> getErrorsMap(List<String> errors) {

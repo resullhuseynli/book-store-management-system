@@ -2,6 +2,7 @@ package com.store.book.service;
 
 import com.store.book.dao.BookDAO;
 import com.store.book.dao.entity.Book;
+import com.store.book.exception.exceptions.ImageIsNotAvailableException;
 import jakarta.transaction.Transactional;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -45,6 +46,9 @@ public class CoverImageService {
 
     public ResponseEntity<byte[]> getCoverImage(Long bookId) throws IOException {
         Book book = bookService.getBookWithDetailsById(bookId);
+        if(book.getCoverImageUrl() == null){
+            throw new ImageIsNotAvailableException("Cover image of:  " + book.getTitle() + " not found");
+        }
         Path imagePath = Path.of(book.getCoverImageUrl());
         if (!Files.exists(imagePath)) {
             return ResponseEntity.noContent().build();
