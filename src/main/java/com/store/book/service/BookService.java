@@ -6,10 +6,14 @@ import com.store.book.dao.dto.BookDtoResponse;
 import com.store.book.dao.entity.Author;
 import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Publisher;
+import com.store.book.enums.Genre;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.BookMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,23 +31,22 @@ public class BookService {
         book.setAuthor(author);
         book.setPublisher(publisher);
         bookDAO.save(book);
-        BookDtoResponse bookDtoResponse = bookMapper.entityToDto(book);
-        bookDtoResponse.setAuthorName(author.getName());
-        bookDtoResponse.setPublisherName(publisher.getName());
-        return bookDtoResponse;
+        return bookMapper.entityToDto(book);
     }
 
     public BookDtoResponse getBookById(Long id) {
-        Book book = bookDAO.findById(id)
-                .orElseThrow(() -> new NotFoundException("Book with id: " + id + " not found"));
-        BookDtoResponse bookDtoResponse = bookMapper.entityToDto(book);
-        bookDtoResponse.setAuthorName(book.getAuthor().getName());
-        bookDtoResponse.setPublisherName(book.getPublisher().getName());
-        return bookDtoResponse;
+        Book book = getBookWithDetailsById(id);
+        return bookMapper.entityToDto(book);
     }
 
     public Book getBookWithDetailsById(Long id) {
         return bookDAO.findById(id)
                 .orElseThrow(() -> new NotFoundException("Book with id: " + id + " not found"));
+    }
+
+    public List<BookDtoResponse> getBooksByGenre(Genre genre) {
+        return bookDAO.getBooksByGenre(genre).stream()
+                .map(bookMapper::entityToDto)
+                .collect(Collectors.toList());
     }
 }

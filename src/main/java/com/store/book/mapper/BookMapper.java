@@ -27,6 +27,8 @@ public class BookMapper {
                 .price(book.getPrice())
                 .pageCount(book.getPageCount())
                 .languages(book.getLanguages())
+                .publisherName(book.getPublisher().getName())
+                .authorName(book.getAuthor().getName())
                 .build();
     }
 }

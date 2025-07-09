@@ -2,11 +2,14 @@ package com.store.book.controller;
 
 import com.store.book.dao.dto.BookDtoRequest;
 import com.store.book.dao.dto.BookDtoResponse;
+import com.store.book.enums.Genre;
 import com.store.book.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +26,10 @@ public class BookController {
     @PostMapping
     public ResponseEntity<BookDtoResponse> createBook(BookDtoRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.createBook(request));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<BookDtoResponse>> getBooksByGenre(@RequestParam Genre genre) {
+        return ResponseEntity.ok(bookService.getBooksByGenre(genre));
     }
 }
