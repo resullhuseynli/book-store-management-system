@@ -9,3 +9,7 @@ databaseChangeLog:
       file: db/changelog/070825-004-update-cover-image-url-length.yaml
   - include:
       file: db/changelog/070924-005-mix-author-columns.yaml
+  - include:
+      file: db/changelog/071025-006-create-discount-table.yaml
+  - include:
+      file: db/changelog/071025-007-make-relationship-between-discount-book.yaml

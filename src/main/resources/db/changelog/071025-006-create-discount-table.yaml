@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 071025-006-create-discount-table
+      author: Resul Huseynli
+      changes:
+        - createTable:
+            tableName: discounts
+            columns:
+              - column:
+                  name: discount_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: discount_percentage
+                  type: NUMERIC(5,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: discount_start_date
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: discount_end_date
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
