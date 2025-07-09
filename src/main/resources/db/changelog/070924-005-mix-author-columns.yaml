@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 070924-005-mix-author-columns
+      author: Resul Huseynli
+      changes:
+        - dropColumn:
+            tableName: authors
+            columnName: author_first_name
+        - dropColumn:
+            tableName: authors
+            columnName: author_last_name
+        - addColumn:
+            tableName: authors
+            columns:
+              - column:
+                  name: author_fullname
+                  type: varchar(255)

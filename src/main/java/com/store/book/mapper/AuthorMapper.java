@@ -10,8 +10,7 @@ public class AuthorMapper {
     public Author dtoToEntity(AuthorDtoRequest request) {
         return Author.builder()
                 .aboutUrl(request.getAboutUrl())
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
+                .name(request.getName())
                 .build();
     }
 }

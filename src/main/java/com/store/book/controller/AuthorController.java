@@ -42,4 +42,9 @@ public class AuthorController {
     public ResponseEntity<Author> getAuthorById(@PathVariable Long id) {
         return ResponseEntity.ok().body(authorService.getAuthorById(id));
     }
+
+    @GetMapping
+    public ResponseEntity<List<Author>> getAllAuthorsByName(@RequestParam String name) {
+        return  ResponseEntity.ok().body(authorService.getAuthorsByName(name));
+    }
 }

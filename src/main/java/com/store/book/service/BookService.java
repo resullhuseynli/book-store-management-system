@@ -28,7 +28,7 @@ public class BookService {
         book.setPublisher(publisher);
         bookDAO.save(book);
         BookDtoResponse bookDtoResponse = bookMapper.entityToDto(book);
-        bookDtoResponse.setAuthorName(author.getFirstName() + " " + author.getLastName());
+        bookDtoResponse.setAuthorName(author.getName());
         bookDtoResponse.setPublisherName(publisher.getName());
         return bookDtoResponse;
     }
@@ -37,7 +37,7 @@ public class BookService {
         Book book = bookDAO.findById(id)
                 .orElseThrow(() -> new NotFoundException("Book with id: " + id + " not found"));
         BookDtoResponse bookDtoResponse = bookMapper.entityToDto(book);
-        bookDtoResponse.setAuthorName(book.getAuthor().getFirstName() + " " + book.getAuthor().getLastName());
+        bookDtoResponse.setAuthorName(book.getAuthor().getName());
         bookDtoResponse.setPublisherName(book.getPublisher().getName());
         return bookDtoResponse;
     }

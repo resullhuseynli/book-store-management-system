@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/070825-003-change-column-names.yaml
   - include:
       file: db/changelog/070825-004-update-cover-image-url-length.yaml
+  - include:
+      file: db/changelog/070924-005-mix-author-columns.yaml

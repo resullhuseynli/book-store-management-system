@@ -29,7 +29,7 @@ public class AuthorService {
 
     public Author createAuthor(AuthorDtoRequest request) {
         getAllAuthors().forEach(author -> {
-            if(author.getFirstName().equals(request.getFirstName()) && author.getLastName().equals(request.getLastName())) {
+            if(author.getName().equals(request.getName())) {
                 throw new EntityContainException("Author already exists");
             }
         });
@@ -38,8 +38,7 @@ public class AuthorService {
 
     public Author updateAuthor(Long id, AuthorDtoRequest request) {
         Author author = getAuthorById(id);
-        author.setFirstName(request.getFirstName());
-        author.setLastName(request.getLastName());
+        author.setName(request.getName());
         author.setAboutUrl(request.getAboutUrl());
         return  authorDAO.save(author);
     }
@@ -47,5 +46,9 @@ public class AuthorService {
     public void deleteAuthorById(Long id) {
         Author author = getAuthorById(id);
         authorDAO.delete(author);
+    }
+
+    public List<Author> getAuthorsByName(String name) {
+        return authorDAO.getAuthorsByName(name);
     }
 }
