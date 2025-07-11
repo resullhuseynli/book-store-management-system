@@ -7,12 +7,16 @@ import com.store.book.dao.dto.DiscountDtoResponse;
 import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Discount;
 import com.store.book.mapper.DiscountMapper;
+import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +30,7 @@ public class DiscountService {
     @Transactional
     public DiscountDtoResponse createDiscount(DiscountDtoRequest request) {
         Discount discount = discountMapper.dtoToEntity(request);
+        discount.setActive(LocalDateTime.now().isAfter(discount.getStartDate()) && LocalDateTime.now().isBefore(discount.getEndDate()));
         Set<Book> books = new HashSet<>();
         request.getBookIds().forEach(bookId -> {
             Book book = bookService.getBookWithDetailsById(bookId);
@@ -37,5 +42,17 @@ public class DiscountService {
         discountDAO.save(discount);
         bookDAO.saveAll(books);
         return discountMapper.entityToDto(discount);
+    }
+
+    @PostConstruct
+    public void checkActiveDiscounts(){
+        List<Discount> activeDiscounts = discountDAO.findExpiredDiscounts(LocalDateTime.now());
+        activeDiscounts.forEach(discount -> discount.setActive(false));
+        discountDAO.saveAll(activeDiscounts);
+    }
+
+    public List<DiscountDtoResponse> getAllActiveDiscounts() {
+        List<Discount> activeDiscountList = discountDAO.findAllByActiveTrue();
+        return activeDiscountList.stream().map(discountMapper::entityToDto).collect(Collectors.toList());
     }
 }
