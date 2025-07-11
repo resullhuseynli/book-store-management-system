@@ -29,6 +29,7 @@ public class DiscountMapper {
                                 .map(Book::getTitle)
                                 .collect(Collectors.toSet())
                 )
+                .isActive(entity.isActive())
                 .build();
     }
 }

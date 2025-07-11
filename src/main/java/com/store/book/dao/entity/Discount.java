@@ -31,6 +31,9 @@ public class Discount {
     @Column(name = "discount_end_date")
     private LocalDateTime endDate;
 
+    @Column(name = "is_active")
+    private boolean isActive;
+
     @ManyToMany(mappedBy = "discounts")
     private Set<Book> books = new HashSet<>();
 

@@ -15,5 +15,6 @@ public class DiscountDtoResponse {
     private Long id;
     private BigDecimal percentage;
     private Set<String> bookNames;
+    private boolean isActive;
 
 }

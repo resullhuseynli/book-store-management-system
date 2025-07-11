@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 071025-008-add-is-active-column-to-discount
+      author: Resul Huseynli
+      changes:
+        - addColumn:
+            tableName: discounts
+            columns:
+              - column:
+                  name: is_active
+                  type: boolean
+                  defaultValueBoolean: true
