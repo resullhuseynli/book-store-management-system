@@ -13,3 +13,5 @@ databaseChangeLog:
       file: db/changelog/071025-006-create-discount-table.yaml
   - include:
       file: db/changelog/071025-007-make-relationship-between-discount-book.yaml
+  - include:
+      file: db/changelog/071025-008-add-is-active-column-to-discount.yaml
