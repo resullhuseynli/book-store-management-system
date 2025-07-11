@@ -49,4 +49,15 @@ public class BookService {
                 .map(bookMapper::entityToDto)
                 .collect(Collectors.toList());
     }
+
+    public void deleteBookById(Long id) {
+        Book book = getBookWithDetailsById(id);
+        bookDAO.delete(book);
+    }
+
+    public List<BookDtoResponse> getBooksByAuthorId(Long authorId) {
+        Author author = authorService.getAuthorById(authorId);
+        return bookDAO.getBooksByAuthor(author).stream()
+                .map(bookMapper::entityToDto).collect(Collectors.toList());
+    }
 }
