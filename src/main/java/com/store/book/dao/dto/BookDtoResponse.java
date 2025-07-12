@@ -16,9 +16,10 @@ public class BookDtoResponse {
 
     private Long id;
     private String title;
-//    private MultipartFile coverImage;
     private Genre genre;
-    private BigDecimal price;
+    private BigDecimal oldPrice;
+    private BigDecimal newPrice;
+    private boolean hasDiscount;
     private Integer pageCount;
     private Set<Language> languages;
     private String authorName;
