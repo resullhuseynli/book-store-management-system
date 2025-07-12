@@ -33,4 +33,10 @@ public class DiscountController {
     public ResponseEntity<List<DiscountDtoResponse>> getAllDiscounts() {
         return ResponseEntity.ok(discountService.getAllDiscounts());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDiscount(@PathVariable Long id) {
+        discountService.deleteDiscount(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -6,6 +6,7 @@ import com.store.book.dao.dto.DiscountDtoRequest;
 import com.store.book.dao.dto.DiscountDtoResponse;
 import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Discount;
+import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.DiscountMapper;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
@@ -61,5 +62,12 @@ public class DiscountService {
         return discounts.stream()
                 .map(discountMapper::entityToDto)
                 .toList();
+    }
+
+    public void deleteDiscount(Long id) {
+        Discount discount = discountDAO.findById(id)
+                .orElseThrow(() -> new NotFoundException("discount with id: " + id + " not found"));
+        discount.setActive(false);
+        discountDAO.save(discount);
     }
 }
