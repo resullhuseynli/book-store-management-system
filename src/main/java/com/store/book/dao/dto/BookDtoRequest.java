@@ -3,6 +3,7 @@ package com.store.book.dao.dto;
 import com.store.book.enums.Genre;
 import com.store.book.enums.Language;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +25,11 @@ public class BookDtoRequest {
     @NotNull(message = "Price must not be null")
     @DecimalMin(value = "0.01", message = "Price must be greater than 0")
     private BigDecimal price;
+
+    @Min(value = 0, message = "Amount cannot be negative")
     private Integer amount;
+
+    @Min(value = 0, message = "Page count cannot be negative")
     private Integer pageCount;
     private Set<Language> languages;
     private Long authorId;
