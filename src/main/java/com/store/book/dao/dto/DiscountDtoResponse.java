@@ -3,6 +3,7 @@ package com.store.book.dao.dto;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
@@ -16,5 +17,7 @@ public class DiscountDtoResponse {
     private BigDecimal percentage;
     private Set<String> bookNames;
     private boolean isActive;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }

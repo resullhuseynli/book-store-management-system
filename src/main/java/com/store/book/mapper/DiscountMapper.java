@@ -30,6 +30,8 @@ public class DiscountMapper {
                                 .collect(Collectors.toSet())
                 )
                 .isActive(entity.isActive())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 }

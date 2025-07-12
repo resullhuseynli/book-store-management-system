@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 071225-009-add-columns-created-at-and-updated-at
+      author: Resul Huseynli
+      changes:
+        - addColumn:
+            tableName: discounts
+            columns:
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP

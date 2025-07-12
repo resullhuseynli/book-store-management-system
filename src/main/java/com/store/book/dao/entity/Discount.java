@@ -2,6 +2,8 @@ package com.store.book.dao.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -33,6 +35,14 @@ public class Discount {
 
     @Column(name = "is_active")
     private boolean isActive;
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @ManyToMany(mappedBy = "discounts")
     private Set<Book> books = new HashSet<>();
