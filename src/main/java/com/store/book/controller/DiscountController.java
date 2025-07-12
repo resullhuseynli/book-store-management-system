@@ -2,7 +2,7 @@ package com.store.book.controller;
 
 import com.store.book.dao.dto.DiscountDtoRequest;
 import com.store.book.dao.dto.DiscountDtoResponse;
-import com.store.book.service.DiscountService;
+import com.store.book.service.impl.DiscountServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +17,11 @@ import java.util.List;
 @Validated
 public class DiscountController {
 
-    private final DiscountService discountService;
+    private final DiscountServiceImpl discountService;
 
     @PostMapping
     public ResponseEntity<DiscountDtoResponse> createDiscount(@Valid @RequestBody DiscountDtoRequest request) {
-        return ResponseEntity.ok(discountService.createDiscount(request));
+        return ResponseEntity.ok(discountService.create(request));
     }
 
     @GetMapping("/active-discounts")
@@ -31,12 +31,12 @@ public class DiscountController {
 
     @GetMapping("/all-discounts")
     public ResponseEntity<List<DiscountDtoResponse>> getAllDiscounts() {
-        return ResponseEntity.ok(discountService.getAllDiscounts());
+        return ResponseEntity.ok(discountService.getAll());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDiscount(@PathVariable Long id) {
-        discountService.deleteDiscount(id);
+        discountService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

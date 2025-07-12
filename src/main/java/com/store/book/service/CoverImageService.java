@@ -3,10 +3,8 @@ package com.store.book.service;
 import com.store.book.dao.BookDAO;
 import com.store.book.dao.entity.Book;
 import com.store.book.exception.exceptions.ImageIsNotAvailableException;
+import com.store.book.service.impl.BookServiceImpl;
 import jakarta.transaction.Transactional;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,9 +22,9 @@ public class CoverImageService {
 
     private final Path uploadDirectory = Paths.get("uploads");
     private final BookDAO bookDAO;
-    private final BookService bookService;
+    private final BookServiceImpl bookService;
 
-    public CoverImageService(BookDAO bookDAO, BookService bookService) throws IOException {
+    public CoverImageService(BookDAO bookDAO, BookServiceImpl bookService) throws IOException {
         this.bookService = bookService;
         if (!Files.exists(uploadDirectory)) {
             Files.createDirectories(uploadDirectory);
