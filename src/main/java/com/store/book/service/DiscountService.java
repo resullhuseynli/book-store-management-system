@@ -35,7 +35,7 @@ public class DiscountService {
         request.getBookIds().forEach(bookId -> {
             Book book = bookService.getBookWithDetailsById(bookId);
             books.add(book);
-            if(book.getDiscounts()==null) book.setDiscounts(new HashSet<>());
+            if (book.getDiscounts() == null) book.setDiscounts(new HashSet<>());
             book.getDiscounts().add(discount);
         });
         discount.setBooks(books);
@@ -45,7 +45,7 @@ public class DiscountService {
     }
 
     @PostConstruct
-    public void checkActiveDiscounts(){
+    public void checkActiveDiscounts() {
         List<Discount> activeDiscounts = discountDAO.findExpiredDiscounts(LocalDateTime.now());
         activeDiscounts.forEach(discount -> discount.setActive(false));
         discountDAO.saveAll(activeDiscounts);
@@ -54,5 +54,12 @@ public class DiscountService {
     public List<DiscountDtoResponse> getAllActiveDiscounts() {
         List<Discount> activeDiscountList = discountDAO.findAllByActiveTrue();
         return activeDiscountList.stream().map(discountMapper::entityToDto).collect(Collectors.toList());
+    }
+
+    public List<DiscountDtoResponse> getAllDiscounts() {
+        List<Discount> discounts = (List<Discount>) discountDAO.findAll();
+        return discounts.stream()
+                .map(discountMapper::entityToDto)
+                .toList();
     }
 }
