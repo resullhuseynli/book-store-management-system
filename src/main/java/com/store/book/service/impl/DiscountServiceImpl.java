@@ -1,4 +1,4 @@
-package com.store.book.service;
+package com.store.book.service.impl;
 
 import com.store.book.dao.BookDAO;
 import com.store.book.dao.DiscountDAO;
@@ -6,7 +6,9 @@ import com.store.book.dao.dto.DiscountDtoRequest;
 import com.store.book.dao.dto.DiscountDtoResponse;
 import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Discount;
+import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.DiscountMapper;
+import com.store.book.service.BaseService;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +22,16 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class DiscountService {
+public class DiscountServiceImpl implements BaseService<DiscountDtoRequest, DiscountDtoResponse> {
 
     private final DiscountDAO discountDAO;
     private final BookDAO bookDAO;
     private final DiscountMapper discountMapper;
-    private final BookService bookService;
+    private final BookServiceImpl bookService;
 
     @Transactional
-    public DiscountDtoResponse createDiscount(DiscountDtoRequest request) {
+    @Override
+    public DiscountDtoResponse create(DiscountDtoRequest request) {
         Discount discount = discountMapper.dtoToEntity(request);
         discount.setActive(LocalDateTime.now().isAfter(discount.getStartDate()) && LocalDateTime.now().isBefore(discount.getEndDate()));
         Set<Book> books = new HashSet<>();
@@ -56,10 +59,24 @@ public class DiscountService {
         return activeDiscountList.stream().map(discountMapper::entityToDto).collect(Collectors.toList());
     }
 
-    public List<DiscountDtoResponse> getAllDiscounts() {
+    @Override
+    public DiscountDtoResponse getById(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<DiscountDtoResponse> getAll() {
         List<Discount> discounts = (List<Discount>) discountDAO.findAll();
         return discounts.stream()
                 .map(discountMapper::entityToDto)
                 .toList();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        Discount discount = discountDAO.findById(id)
+                .orElseThrow(() -> new NotFoundException("discount with id: " + id + " not found"));
+        discount.setActive(false);
+        discountDAO.save(discount);
     }
 }

@@ -1,4 +1,4 @@
-package com.store.book.service;
+package com.store.book.service.impl;
 
 import com.store.book.dao.BookDAO;
 import com.store.book.dao.dto.BookDtoRequest;
@@ -9,6 +9,7 @@ import com.store.book.dao.entity.Publisher;
 import com.store.book.enums.Genre;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.BookMapper;
+import com.store.book.service.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,24 +18,26 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class BookService {
+public class BookServiceImpl implements BaseService<BookDtoRequest, BookDtoResponse> {
 
     private final BookDAO bookDAO;
     private final BookMapper bookMapper;
-    private final AuthorService authorService;
-    private final PublisherService publisherService;
+    private final AuthorServiceImpl authorService;
+    private final PublisherServiceImpl publisherService;
 
-    public BookDtoResponse createBook(BookDtoRequest request) {
+    @Override
+    public BookDtoResponse create(BookDtoRequest request) {
         Book book = bookMapper.dtoToEntity(request);
-        Author author = authorService.getAuthorById(request.getAuthorId());
-        Publisher publisher = publisherService.getPublisherById(request.getPublisherId());
+        Author author = authorService.getById(request.getAuthorId());
+        Publisher publisher = publisherService.getById(request.getPublisherId());
         book.setAuthor(author);
         book.setPublisher(publisher);
         bookDAO.save(book);
         return bookMapper.entityToDto(book);
     }
 
-    public BookDtoResponse getBookById(Long id) {
+    @Override
+    public BookDtoResponse getById(Long id) {
         Book book = getBookWithDetailsById(id);
         return bookMapper.entityToDto(book);
     }
@@ -50,14 +53,22 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
-    public void deleteBookById(Long id) {
+    @Override
+    public void deleteById(Long id) {
         Book book = getBookWithDetailsById(id);
         bookDAO.delete(book);
     }
 
     public List<BookDtoResponse> getBooksByAuthorId(Long authorId) {
-        Author author = authorService.getAuthorById(authorId);
+        Author author = authorService.getById(authorId);
         return bookDAO.getBooksByAuthor(author).stream()
                 .map(bookMapper::entityToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookDtoResponse> getAll() {
+        return bookDAO.findAll().stream()
+                .map(bookMapper::entityToDto)
+                .collect(Collectors.toList());
     }
 }

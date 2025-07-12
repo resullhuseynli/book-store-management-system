@@ -2,7 +2,7 @@ package com.store.book.controller;
 
 import com.store.book.dao.dto.AuthorDtoRequest;
 import com.store.book.dao.entity.Author;
-import com.store.book.service.AuthorService;
+import com.store.book.service.impl.AuthorServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +15,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthorController {
 
-    private final AuthorService authorService;
+    private final AuthorServiceImpl authorService;
 
     @GetMapping("/list")
     public ResponseEntity<List<Author>> getAllAuthors() {
-        return ResponseEntity.ok().body(authorService.getAllAuthors());
+        return ResponseEntity.ok().body(authorService.getAll());
     }
 
     @PostMapping
     public ResponseEntity<Author> saveAuthor(@RequestBody AuthorDtoRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(authorService.createAuthor(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(authorService.create(request));
     }
 
     @PutMapping("/{id}")
@@ -34,13 +34,13 @@ public class AuthorController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {
-        authorService.deleteAuthorById(id);
+        authorService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Author> getAuthorById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(authorService.getAuthorById(id));
+        return ResponseEntity.ok().body(authorService.getById(id));
     }
 
     @GetMapping

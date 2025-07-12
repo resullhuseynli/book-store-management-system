@@ -3,7 +3,7 @@ package com.store.book.controller;
 import com.store.book.dao.dto.BookDtoRequest;
 import com.store.book.dao.dto.BookDtoResponse;
 import com.store.book.enums.Genre;
-import com.store.book.service.BookService;
+import com.store.book.service.impl.BookServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,16 +19,16 @@ import java.util.List;
 @RequestMapping("/api/v1/book")
 public class BookController {
 
-    private final BookService bookService;
+    private final BookServiceImpl bookService;
 
     @GetMapping("/{id}")
     public ResponseEntity<BookDtoResponse> getBookById(@PathVariable Long id) {
-        return ResponseEntity.ok(bookService.getBookById(id));
+        return ResponseEntity.ok(bookService.getById(id));
     }
 
     @PostMapping
     public ResponseEntity<BookDtoResponse> createBook(@Valid BookDtoRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(bookService.createBook(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookService.create(request));
     }
 
     @GetMapping("/genre")
@@ -43,7 +43,12 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBookById(@PathVariable Long id) {
-        bookService.deleteBookById(id);
+        bookService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/all-books")
+    public ResponseEntity<List<BookDtoResponse>> getAll() {
+        return ResponseEntity.ok(bookService.getAll());
     }
 }
