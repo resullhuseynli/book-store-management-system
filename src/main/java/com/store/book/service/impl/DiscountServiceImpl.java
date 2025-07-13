@@ -9,6 +9,7 @@ import com.store.book.dao.entity.Discount;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.DiscountMapper;
 import com.store.book.service.BaseService;
+import com.store.book.service.DiscountService;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class DiscountServiceImpl implements BaseService<DiscountDtoRequest, DiscountDtoResponse> {
+public class DiscountServiceImpl implements DiscountService {
 
     private final DiscountDAO discountDAO;
     private final BookDAO bookDAO;
