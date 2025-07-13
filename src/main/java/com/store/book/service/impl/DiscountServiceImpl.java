@@ -8,7 +8,6 @@ import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Discount;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.DiscountMapper;
-import com.store.book.service.BaseService;
 import com.store.book.service.DiscountService;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
@@ -16,9 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,11 +34,11 @@ public class DiscountServiceImpl implements DiscountService {
     public DiscountDtoResponse create(DiscountDtoRequest request) {
         Discount discount = discountMapper.dtoToEntity(request);
         discount.setActive(LocalDateTime.now().isAfter(discount.getStartDate()) && LocalDateTime.now().isBefore(discount.getEndDate()));
-        Set<Book> books = new HashSet<>();
+        List<Book> books = new ArrayList<>();
         request.getBookIds().forEach(bookId -> {
             Book book = bookService.getBookWithDetailsById(bookId);
             books.add(book);
-            if (book.getDiscounts() == null) book.setDiscounts(new HashSet<>());
+            if (book.getDiscounts() == null) book.setDiscounts(new ArrayList<>());
             book.getDiscounts().add(discount);
         });
         discount.setBooks(books);

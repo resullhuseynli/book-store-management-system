@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,7 +31,7 @@ public class BookDtoRequest {
 
     @Min(value = 0, message = "Page count cannot be negative")
     private Integer pageCount;
-    private Set<Language> languages;
+    private List<Language> languages;
     private Long authorId;
     private Long publisherId;
 }

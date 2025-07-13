@@ -27,7 +27,7 @@ public class DiscountMapper {
                 .bookNames(
                         entity.getBooks().stream()
                                 .map(Book::getTitle)
-                                .collect(Collectors.toSet())
+                                .collect(Collectors.toList())
                 )
                 .isActive(entity.isActive())
                 .createdAt(entity.getCreatedAt())

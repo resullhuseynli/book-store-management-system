@@ -9,7 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Getter
@@ -66,7 +66,7 @@ public class Book {
     )
     @Enumerated(EnumType.STRING)
     @Column(name = "book_language")
-    private Set<Language> languages;
+    private List<Language> languages;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "publisher_id", referencedColumnName = "publisher_id")
@@ -78,5 +78,5 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "discount_id")
     )
-    private Set<Discount> discounts;
+    private List<Discount> discounts;
 }

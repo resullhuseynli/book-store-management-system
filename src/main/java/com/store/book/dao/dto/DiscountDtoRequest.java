@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,5 +37,5 @@ public class DiscountDtoRequest {
     private String endDate;
 
     @Schema(description = "List of book IDs to apply the discount", example = "[1, 2, 3]")
-    private Set<Long> bookIds;
+    private List<Long> bookIds;
 }
