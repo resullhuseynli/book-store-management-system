@@ -79,4 +79,7 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "discount_id")
     )
     private List<Discount> discounts;
+
+    @Transient
+    private Long view;
 }
