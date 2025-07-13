@@ -4,51 +4,47 @@ import com.store.book.dao.dto.BookDtoRequest;
 import com.store.book.dao.dto.BookDtoResponse;
 import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Discount;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.Named;
 
 import java.math.BigDecimal;
 
-@Component
-public class BookMapper {
+@Mapper(componentModel = "spring")
+public interface BookMapper {
 
-    public Book dtoToEntity(BookDtoRequest bookDtoRequest) {
-        return Book.builder()
-                .title(bookDtoRequest.getTitle())
-                .genre(bookDtoRequest.getGenre())
-                .price(bookDtoRequest.getPrice())
-                .amount(bookDtoRequest.getAmount())
-                .pageCount(bookDtoRequest.getPageCount())
-                .languages(bookDtoRequest.getLanguages())
-                .build();
+    Book dtoToEntity(BookDtoRequest bookDtoRequest);
+
+    @Mappings({
+            @Mapping(target = "hasDiscount", source = "book", qualifiedByName = "hasDiscount"),
+            @Mapping(target = "oldPrice", source = "price"),
+            @Mapping(target = "publisherName", source = "publisher.name"),
+            @Mapping(target = "authorName", source = "author.name"),
+            @Mapping(target = "newPrice", source = "book", qualifiedByName = "newPrice")
+    })
+    BookDtoResponse entityToDto(Book book);
+
+    @Named("hasDiscount")
+    default boolean hasDiscount(Book book) {
+        return book.getDiscounts().stream()
+                .anyMatch(Discount::isActive);
     }
 
-    public BookDtoResponse entityToDto(Book book) {
-        boolean hasDiscount = book.getDiscounts().stream()
-                .anyMatch(Discount::isActive);
+    @Named("newPrice")
+    default BigDecimal newPrice(Book book) {
         BigDecimal percentage = null;
         for (Discount discount : book.getDiscounts()) {
             if (discount.isActive()) {
                 percentage = discount.getPercentage();
             }
         }
-
-        BigDecimal newPrice = hasDiscount
-                ? book.getPrice()
-                .multiply(BigDecimal.valueOf(100).subtract(percentage).abs())
-                .divide(BigDecimal.valueOf(100))
-                : book.getPrice();
-
-        return BookDtoResponse.builder()
-                .id(book.getId())
-                .title(book.getTitle())
-                .genre(book.getGenre())
-                .oldPrice(book.getPrice())
-                .hasDiscount(hasDiscount)
-                .newPrice(newPrice)
-                .pageCount(book.getPageCount())
-                .languages(book.getLanguages())
-                .publisherName(book.getPublisher().getName())
-                .authorName(book.getAuthor().getName())
-                .build();
+        if (hasDiscount(book)) {
+            return book.getPrice()
+                    .multiply(BigDecimal.valueOf(100).subtract(percentage).abs())
+                    .divide(BigDecimal.valueOf(100));
+        } else {
+            return book.getPrice();
+        }
     }
 }

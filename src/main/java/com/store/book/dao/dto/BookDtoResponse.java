@@ -5,7 +5,7 @@ import com.store.book.enums.Language;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,7 +21,7 @@ public class BookDtoResponse {
     private BigDecimal newPrice;
     private boolean hasDiscount;
     private Integer pageCount;
-    private Set<Language> languages;
+    private List<Language> languages;
     private String authorName;
     private String publisherName;
 }
