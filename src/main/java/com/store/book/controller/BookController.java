@@ -51,4 +51,9 @@ public class BookController {
     public ResponseEntity<List<BookDtoResponse>> getAll() {
         return ResponseEntity.ok(bookService.getAll());
     }
+
+    @GetMapping("/most-viewed")
+    public ResponseEntity<List<BookDtoResponse>> getMostViewed() {
+        return ResponseEntity.ok(bookService.get10MostViewedBooks());
+    }
 }

@@ -10,10 +10,13 @@ import com.store.book.enums.Genre;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.BookMapper;
 import com.store.book.service.BookService;
+import com.store.book.service.ViewTrackerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +27,7 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
     private final AuthorServiceImpl authorService;
     private final PublisherServiceImpl publisherService;
+    private final ViewTrackerService viewTrackerService;
 
     @Override
     public BookDtoResponse create(BookDtoRequest request) {
@@ -39,6 +43,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDtoResponse getById(Long id) {
         Book book = getBookWithDetailsById(id);
+        viewTrackerService.bookTrackView(id);
         return bookMapper.entityToDto(book);
     }
 
@@ -70,5 +75,14 @@ public class BookServiceImpl implements BookService {
         return bookDAO.findAll().stream()
                 .map(bookMapper::entityToDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<BookDtoResponse> get10MostViewedBooks() {
+        Set<String> viewedBooks = viewTrackerService.getTop10BookIds();
+        List<BookDtoResponse> response = new ArrayList<>();
+        for (String bookId : viewedBooks) {
+            response.add(getById(Long.parseLong(bookId)));
+        }
+        return response;
     }
 }
