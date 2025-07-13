@@ -6,7 +6,7 @@ import com.store.book.dao.entity.Author;
 import com.store.book.exception.exceptions.EntityContainException;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.AuthorMapper;
-import com.store.book.service.BaseService;
+import com.store.book.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AuthorServiceImpl implements BaseService<AuthorDtoRequest, Author> {
+public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDAO authorDAO;
     private final AuthorMapper authorMapper;

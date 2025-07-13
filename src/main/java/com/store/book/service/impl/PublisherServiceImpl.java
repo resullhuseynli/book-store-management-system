@@ -5,7 +5,7 @@ import com.store.book.dao.dto.PublisherDtoRequest;
 import com.store.book.dao.entity.Publisher;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.PublisherMapper;
-import com.store.book.service.BaseService;
+import com.store.book.service.PublisherService;
 import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PublisherServiceImpl implements BaseService<PublisherDtoRequest, Publisher> {
+public class PublisherServiceImpl implements PublisherService {
 
     private final PublisherDAO publisherDAO;
     private final PublisherMapper publisherMapper;
