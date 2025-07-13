@@ -3,7 +3,6 @@ package com.store.book.controller;
 import com.store.book.dao.dto.BookDtoRequest;
 import com.store.book.dao.dto.BookDtoResponse;
 import com.store.book.enums.Genre;
-import com.store.book.service.ViewTrackerService;
 import com.store.book.service.impl.BookServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +20,9 @@ import java.util.List;
 public class BookController {
 
     private final BookServiceImpl bookService;
-    private final ViewTrackerService  viewTrackerService;
 
     @GetMapping("/{id}")
     public ResponseEntity<BookDtoResponse> getBookById(@PathVariable Long id) {
-        viewTrackerService.bookTrackView(id);
         return ResponseEntity.ok(bookService.getById(id));
     }
 
@@ -53,5 +50,10 @@ public class BookController {
     @GetMapping("/all-books")
     public ResponseEntity<List<BookDtoResponse>> getAll() {
         return ResponseEntity.ok(bookService.getAll());
+    }
+
+    @GetMapping("/most-viewed")
+    public ResponseEntity<List<BookDtoResponse>> getMostViewed() {
+        return ResponseEntity.ok(bookService.get10MostViewedBooks());
     }
 }

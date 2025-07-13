@@ -55,7 +55,7 @@ public class Book {
     @Column(name = "book_updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", referencedColumnName = "author_id")
     private Author author;
 
@@ -68,7 +68,7 @@ public class Book {
     @Column(name = "book_language")
     private List<Language> languages;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id", referencedColumnName = "publisher_id")
     private Publisher publisher;
 
@@ -81,5 +81,5 @@ public class Book {
     private List<Discount> discounts;
 
     @Transient
-    private Long view;
+    private Long viewCount;
 }
