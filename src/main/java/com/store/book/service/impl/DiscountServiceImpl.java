@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,8 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public DiscountDtoResponse create(DiscountDtoRequest request) {
         Discount discount = discountMapper.dtoToEntity(request);
-        discount.setActive(LocalDateTime.now().isAfter(discount.getStartDate()) && LocalDateTime.now().isBefore(discount.getEndDate()));
+        discount.setActive(LocalDateTime.now().isAfter(discount.getStartDate()) &&
+                           LocalDateTime.now().isBefore(discount.getEndDate()));
         List<Book> books = new ArrayList<>();
         request.getBookIds().forEach(bookId -> {
             Book book = bookService.getBookWithDetailsById(bookId);
@@ -56,12 +56,16 @@ public class DiscountServiceImpl implements DiscountService {
 
     public List<DiscountDtoResponse> getAllActiveDiscounts() {
         List<Discount> activeDiscountList = discountDAO.findAllByActiveTrue();
-        return activeDiscountList.stream().map(discountMapper::entityToDto).collect(Collectors.toList());
+        return activeDiscountList.stream()
+                .map(discountMapper::entityToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public DiscountDtoResponse getById(Long id) {
-        return null;
+        return discountDAO.findById(id)
+                .map(discountMapper::entityToDto)
+                .orElseThrow(() -> new NotFoundException("Discount not found"));
     }
 
     @Override
@@ -75,7 +79,7 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public void deleteById(Long id) {
         Discount discount = discountDAO.findById(id)
-                .orElseThrow(() -> new NotFoundException("discount with id: " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("Discount not found"));
         discount.setActive(false);
         discountDAO.save(discount);
     }

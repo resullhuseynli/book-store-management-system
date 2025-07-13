@@ -44,7 +44,7 @@ public class CoverImageService {
 
     public ResponseEntity<byte[]> getCoverImage(Long bookId) throws IOException {
         Book book = bookService.getBookWithDetailsById(bookId);
-        if(book.getCoverImageUrl() == null){
+        if (book.getCoverImageUrl() == null) {
             throw new ImageIsNotAvailableException("Cover image of:  " + book.getTitle() + " not found");
         }
         Path imagePath = Path.of(book.getCoverImageUrl());
