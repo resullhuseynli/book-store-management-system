@@ -4,34 +4,29 @@ import com.store.book.dao.dto.DiscountDtoRequest;
 import com.store.book.dao.dto.DiscountDtoResponse;
 import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Discount;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.Named;
 
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
-public class DiscountMapper {
+@Mapper(componentModel = "spring")
+public interface DiscountMapper {
 
-    public Discount dtoToEntity(DiscountDtoRequest request) {
-        return Discount.builder()
-                .startDate(LocalDateTime.parse(request.getStartDate()))
-                .endDate(LocalDateTime.parse(request.getEndDate()))
-                .percentage(request.getPercentage())
-                .build();
-    }
+    Discount dtoToEntity(DiscountDtoRequest request);
 
-    public DiscountDtoResponse entityToDto(Discount entity) {
-        return DiscountDtoResponse.builder()
-                .id(entity.getId())
-                .percentage(entity.getPercentage())
-                .bookNames(
-                        entity.getBooks().stream()
-                                .map(Book::getTitle)
-                                .collect(Collectors.toList())
-                )
-                .isActive(entity.isActive())
-                .createdAt(entity.getCreatedAt())
-                .updatedAt(entity.getUpdatedAt())
-                .build();
+    @Mappings({
+            @Mapping(target = "bookNames", source = "entity", qualifiedByName = "extractBookNames"),
+            @Mapping(target = "isActive", source = "active")
+    })
+    DiscountDtoResponse entityToDto(Discount entity);
+
+    @Named("extractBookNames")
+    default List<String> extractBookNames(Discount discount) {
+        return discount.getBooks().stream()
+                .map(Book::getTitle)
+                .collect(Collectors.toList());
     }
 }

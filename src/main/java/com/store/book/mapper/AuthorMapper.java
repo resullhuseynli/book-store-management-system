@@ -2,15 +2,10 @@ package com.store.book.mapper;
 
 import com.store.book.dao.dto.AuthorDtoRequest;
 import com.store.book.dao.entity.Author;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
 
-@Component
-public class AuthorMapper {
+@Mapper(componentModel = "spring")
+public interface AuthorMapper {
 
-    public Author dtoToEntity(AuthorDtoRequest request) {
-        return Author.builder()
-                .aboutUrl(request.getAboutUrl())
-                .name(request.getName())
-                .build();
-    }
+    Author dtoToEntity(AuthorDtoRequest request);
 }
