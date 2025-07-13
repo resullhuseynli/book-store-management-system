@@ -7,5 +7,5 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface PublisherMapper {
 
-    public Publisher dtoToEntity(PublisherDtoRequest request);
+    Publisher dtoToEntity(PublisherDtoRequest request);
 }
