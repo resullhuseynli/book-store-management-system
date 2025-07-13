@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Service
@@ -13,12 +14,14 @@ public class ViewTrackerService {
     private final StringRedisTemplate redisTemplate;
 
     public void bookTrackView(Long bookId) {
-        String key = "book:viewCount";
+        LocalDate date = LocalDate.now();
+        String key = "book:" + date + ":viewCount";
         redisTemplate.opsForZSet().incrementScore(key, bookId.toString(), 1);
     }
 
     public Set<String> getTop10BookIds() {
-        String key = "book:viewCount";
+        LocalDate date = LocalDate.now();
+        String key = "book:" + date + ":viewCount";
         return redisTemplate.opsForZSet().reverseRange(key, 0, 9);
     }
 }
