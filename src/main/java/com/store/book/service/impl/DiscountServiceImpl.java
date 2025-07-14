@@ -54,6 +54,7 @@ public class DiscountServiceImpl implements DiscountService {
         discountDAO.saveAll(activeDiscounts);
     }
 
+    @Override
     public List<DiscountDtoResponse> getAllActiveDiscounts() {
         List<Discount> activeDiscountList = discountDAO.findAllByActiveTrue();
         return activeDiscountList.stream()
