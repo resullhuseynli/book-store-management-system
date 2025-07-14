@@ -10,5 +10,6 @@ import java.util.List;
 public interface AuthorDAO extends JpaRepository<Author, Long> {
 
     List<Author> getAuthorsByName(String name);
+    boolean existsAuthorsByName(String username);
 
 }

@@ -32,11 +32,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author create(AuthorDtoRequest request) {
-        getAll().forEach(author -> {
-            if (author.getName().equals(request.getName())) {
-                throw new EntityContainException("Author already exists");
-            }
-        });
+        if (authorDAO.existsAuthorsByName(request.getName())) {
+            throw new EntityContainException("Author already exists");
+        }
         return authorDAO.save(authorMapper.dtoToEntity(request));
     }
 
