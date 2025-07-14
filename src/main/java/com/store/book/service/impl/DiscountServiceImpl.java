@@ -1,7 +1,7 @@
 package com.store.book.service.impl;
 
-import com.store.book.dao.BookDAO;
-import com.store.book.dao.DiscountDAO;
+import com.store.book.dao.BookRepository;
+import com.store.book.dao.DiscountRepository;
 import com.store.book.dao.dto.DiscountDtoRequest;
 import com.store.book.dao.dto.DiscountDtoResponse;
 import com.store.book.dao.entity.Book;
@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DiscountServiceImpl implements DiscountService {
 
-    private final DiscountDAO discountDAO;
-    private final BookDAO bookDAO;
+    private final DiscountRepository discountRepository;
+    private final BookRepository bookRepository;
     private final DiscountMapper discountMapper;
     private final BookServiceImpl bookService;
 
@@ -42,21 +42,21 @@ public class DiscountServiceImpl implements DiscountService {
             book.getDiscounts().add(discount);
         });
         discount.setBooks(books);
-        discountDAO.save(discount);
-        bookDAO.saveAll(books);
+        discountRepository.save(discount);
+        bookRepository.saveAll(books);
         return discountMapper.entityToDto(discount);
     }
 
     @PostConstruct
     public void checkActiveDiscounts() {
-        List<Discount> activeDiscounts = discountDAO.findExpiredDiscounts(LocalDateTime.now());
+        List<Discount> activeDiscounts = discountRepository.findExpiredDiscounts(LocalDateTime.now());
         activeDiscounts.forEach(discount -> discount.setActive(false));
-        discountDAO.saveAll(activeDiscounts);
+        discountRepository.saveAll(activeDiscounts);
     }
 
     @Override
     public List<DiscountDtoResponse> getAllActiveDiscounts() {
-        List<Discount> activeDiscountList = discountDAO.findAllByActiveTrue();
+        List<Discount> activeDiscountList = discountRepository.findAllByActiveTrue();
         return activeDiscountList.stream()
                 .map(discountMapper::entityToDto)
                 .collect(Collectors.toList());
@@ -64,14 +64,14 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public DiscountDtoResponse getById(Long id) {
-        return discountDAO.findById(id)
+        return discountRepository.findById(id)
                 .map(discountMapper::entityToDto)
                 .orElseThrow(() -> new NotFoundException("Discount not found"));
     }
 
     @Override
     public List<DiscountDtoResponse> getAll() {
-        List<Discount> discounts = (List<Discount>) discountDAO.findAll();
+        List<Discount> discounts = (List<Discount>) discountRepository.findAll();
         return discounts.stream()
                 .map(discountMapper::entityToDto)
                 .toList();
@@ -79,9 +79,9 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public void deleteById(Long id) {
-        Discount discount = discountDAO.findById(id)
+        Discount discount = discountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Discount not found"));
         discount.setActive(false);
-        discountDAO.save(discount);
+        discountRepository.save(discount);
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BookDAO extends JpaRepository<Book, Long> {
+public interface BookRepository extends JpaRepository<Book, Long> {
 
     List<Book> getBooksByGenre(Genre genre);
     List<Book> getBooksByAuthor(Author author);

@@ -1,6 +1,6 @@
 package com.store.book.service.impl;
 
-import com.store.book.dao.AuthorDAO;
+import com.store.book.dao.AuthorRepository;
 import com.store.book.dao.dto.AuthorDtoRequest;
 import com.store.book.dao.entity.Author;
 import com.store.book.exception.exceptions.EntityContainException;
@@ -16,42 +16,42 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
-    private final AuthorDAO authorDAO;
+    private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
 
     @Override
     public Author getById(Long id) {
-        return authorDAO.findById(id)
+        return authorRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Author with id:" + id + " not found"));
     }
 
     @Override
     public List<Author> getAll() {
-        return authorDAO.findAll();
+        return authorRepository.findAll();
     }
 
     @Override
     public Author create(AuthorDtoRequest request) {
-        if (authorDAO.existsAuthorsByName(request.getName())) {
+        if (authorRepository.existsAuthorsByName(request.getName())) {
             throw new EntityContainException("Author already exists");
         }
-        return authorDAO.save(authorMapper.dtoToEntity(request));
+        return authorRepository.save(authorMapper.dtoToEntity(request));
     }
 
     public Author updateAuthor(Long id, AuthorDtoRequest request) {
         Author author = getById(id);
         author.setName(request.getName());
         author.setAboutUrl(request.getAboutUrl());
-        return authorDAO.save(author);
+        return authorRepository.save(author);
     }
 
     @Override
     public void deleteById(Long id) {
         Author author = getById(id);
-        authorDAO.delete(author);
+        authorRepository.delete(author);
     }
 
     public List<Author> getAuthorsByName(String name) {
-        return authorDAO.getAuthorsByName(name);
+        return authorRepository.getAuthorsByName(name);
     }
 }

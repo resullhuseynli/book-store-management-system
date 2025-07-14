@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 071425-010-create-user-table
+      author: Resul Huseynli
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_name
+                  type: VARCHAR(255)
+              - column:
+                  name: user_first_name
+                  type: VARCHAR(255)
+              - column:
+                  name: user_last_name
+                  type: VARCHAR(255)
+              - column:
+                  name: user_email
+                  type: VARCHAR(255)
+              - column:
+                  name: user_password
+                  type: VARCHAR(255)
+              - column:
+                  name: user_role
+                  type: VARCHAR(50)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP

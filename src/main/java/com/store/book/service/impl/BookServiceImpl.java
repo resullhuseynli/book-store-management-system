@@ -1,6 +1,6 @@
 package com.store.book.service.impl;
 
-import com.store.book.dao.BookDAO;
+import com.store.book.dao.BookRepository;
 import com.store.book.dao.dto.BookDtoRequest;
 import com.store.book.dao.dto.BookDtoResponse;
 import com.store.book.dao.entity.Author;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
-    private final BookDAO bookDAO;
+    private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     private final AuthorServiceImpl authorService;
     private final PublisherServiceImpl publisherService;
@@ -36,7 +36,7 @@ public class BookServiceImpl implements BookService {
         Publisher publisher = publisherService.getById(request.getPublisherId());
         book.setAuthor(author);
         book.setPublisher(publisher);
-        bookDAO.save(book);
+        bookRepository.save(book);
         return bookMapper.entityToDto(book);
     }
 
@@ -49,13 +49,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getBookWithDetailsById(Long id) {
-        return bookDAO.findById(id)
+        return bookRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Book with id: " + id + " not found"));
     }
 
     @Override
     public List<BookDtoResponse> getBooksByGenre(Genre genre) {
-        return bookDAO.getBooksByGenre(genre).stream()
+        return bookRepository.getBooksByGenre(genre).stream()
                 .map(bookMapper::entityToDto)
                 .collect(Collectors.toList());
     }
@@ -63,19 +63,19 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteById(Long id) {
         Book book = getBookWithDetailsById(id);
-        bookDAO.delete(book);
+        bookRepository.delete(book);
     }
 
     @Override
     public List<BookDtoResponse> getBooksByAuthorId(Long authorId) {
         Author author = authorService.getById(authorId);
-        return bookDAO.getBooksByAuthor(author).stream()
+        return bookRepository.getBooksByAuthor(author).stream()
                 .map(bookMapper::entityToDto).collect(Collectors.toList());
     }
 
     @Override
     public List<BookDtoResponse> getAll() {
-        return bookDAO.findAll().stream()
+        return bookRepository.findAll().stream()
                 .map(bookMapper::entityToDto)
                 .collect(Collectors.toList());
     }
