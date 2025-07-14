@@ -2,7 +2,7 @@ package com.store.book.controller;
 
 import com.store.book.dao.dto.PublisherDtoRequest;
 import com.store.book.dao.entity.Publisher;
-import com.store.book.service.impl.PublisherServiceImpl;
+import com.store.book.service.PublisherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("api/v1/publisher")
 public class PublisherController {
 
-    private final PublisherServiceImpl publisherService;
+    private final PublisherService publisherService;
 
     @GetMapping
     public ResponseEntity<List<Publisher>> getAllPublishers() {

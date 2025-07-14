@@ -47,11 +47,13 @@ public class BookServiceImpl implements BookService {
         return bookMapper.entityToDto(book);
     }
 
+    @Override
     public Book getBookWithDetailsById(Long id) {
         return bookDAO.findById(id)
                 .orElseThrow(() -> new NotFoundException("Book with id: " + id + " not found"));
     }
 
+    @Override
     public List<BookDtoResponse> getBooksByGenre(Genre genre) {
         return bookDAO.getBooksByGenre(genre).stream()
                 .map(bookMapper::entityToDto)
@@ -64,6 +66,7 @@ public class BookServiceImpl implements BookService {
         bookDAO.delete(book);
     }
 
+    @Override
     public List<BookDtoResponse> getBooksByAuthorId(Long authorId) {
         Author author = authorService.getById(authorId);
         return bookDAO.getBooksByAuthor(author).stream()
@@ -77,8 +80,9 @@ public class BookServiceImpl implements BookService {
                 .collect(Collectors.toList());
     }
 
-    public List<BookDtoResponse> get10MostViewedBooks() {
-        Set<String> viewedBooks = viewTrackerService.getTop10BookIds();
+    @Override
+    public List<BookDtoResponse> get10MostViewedBooksForToday() {
+        Set<String> viewedBooks = viewTrackerService.getTop10BookIdsForToday();
         List<BookDtoResponse> response = new ArrayList<>();
         for (String bookId : viewedBooks) {
             response.add(getById(Long.parseLong(bookId)));

@@ -2,7 +2,7 @@ package com.store.book.controller;
 
 import com.store.book.dao.dto.DiscountDtoRequest;
 import com.store.book.dao.dto.DiscountDtoResponse;
-import com.store.book.service.impl.DiscountServiceImpl;
+import com.store.book.service.DiscountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.util.List;
 @Validated
 public class DiscountController {
 
-    private final DiscountServiceImpl discountService;
+    private final DiscountService discountService;
 
     @PostMapping
     public ResponseEntity<DiscountDtoResponse> createDiscount(@Valid @RequestBody DiscountDtoRequest request) {

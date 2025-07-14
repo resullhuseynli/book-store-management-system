@@ -3,7 +3,7 @@ package com.store.book.controller;
 import com.store.book.dao.dto.BookDtoRequest;
 import com.store.book.dao.dto.BookDtoResponse;
 import com.store.book.enums.Genre;
-import com.store.book.service.impl.BookServiceImpl;
+import com.store.book.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/api/v1/book")
 public class BookController {
 
-    private final BookServiceImpl bookService;
+    private final BookService bookService;
 
     @GetMapping("/{id}")
     public ResponseEntity<BookDtoResponse> getBookById(@PathVariable Long id) {
@@ -54,6 +54,6 @@ public class BookController {
 
     @GetMapping("/most-viewed")
     public ResponseEntity<List<BookDtoResponse>> getMostViewed() {
-        return ResponseEntity.ok(bookService.get10MostViewedBooks());
+        return ResponseEntity.ok(bookService.get10MostViewedBooksForToday());
     }
 }

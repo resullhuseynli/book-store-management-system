@@ -10,6 +10,8 @@ import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface BookMapper {
@@ -27,24 +29,31 @@ public interface BookMapper {
 
     @Named("hasDiscount")
     default boolean hasDiscount(Book book) {
+        if (book.getDiscounts() == null) {
+            return false;
+        }
         return book.getDiscounts().stream()
                 .anyMatch(Discount::isActive);
     }
 
     @Named("newPrice")
     default BigDecimal newPrice(Book book) {
-        BigDecimal percentage = null;
-        for (Discount discount : book.getDiscounts()) {
-            if (discount.isActive()) {
-                percentage = discount.getPercentage();
-            }
-        }
-        if (hasDiscount(book)) {
-            return book.getPrice()
-                    .multiply(BigDecimal.valueOf(100).subtract(percentage).abs())
-                    .divide(BigDecimal.valueOf(100));
-        } else {
+        List<BigDecimal> percentages = new ArrayList<>();
+        BigDecimal newPrice = null;
+        if (book.getDiscounts() == null || !hasDiscount(book)) {
             return book.getPrice();
+        } else {
+            for (Discount discount : book.getDiscounts()) {
+                if (discount.isActive()) {
+                    percentages.add(discount.getPercentage());
+                }
+            }
+            for (BigDecimal percentage : percentages) {
+                newPrice = book.getPrice()
+                        .multiply(BigDecimal.valueOf(100).subtract(percentage).abs())
+                        .divide(BigDecimal.valueOf(100));
+            }
+            return newPrice;
         }
     }
 }
