@@ -1,0 +1,14 @@
+package com.store.book.dao.dto;
+
+import lombok.*;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class AuthDtoRequest {
+
+    private String username;
+    private String password;
+}
