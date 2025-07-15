@@ -6,6 +6,7 @@ import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.exception.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -53,6 +54,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ImageIsNotAvailableException.class)
     public ResponseEntity<ErrorResponse<String>> handleImageIsNotAvailableException(ImageIsNotAvailableException imageIsNotAvailableException) {
         return badRequest().body(new ErrorResponse<>(UUID.randomUUID(), imageIsNotAvailableException.getMessage()));
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse<String>> handleBadCredentialsException(BadCredentialsException badCredentialsException) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse<>(UUID.randomUUID(), badCredentialsException.getMessage()));
     }
 
     private Map<String, List<String>> getErrorsMap(List<String> errors) {
