@@ -21,3 +21,5 @@ databaseChangeLog:
       file: db/changelog/071425-010-create-user-table.yaml
   - include:
       file: db/changelog/071525-011-add-favorite-books-users-table.yaml
+  - include:
+      file: db/changelog/071525-012-create-comments-table.yaml

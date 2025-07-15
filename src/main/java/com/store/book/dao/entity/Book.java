@@ -80,6 +80,9 @@ public class Book {
     )
     private List<Discount> discounts;
 
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+
     @Transient
     private Long viewCount;
 }
