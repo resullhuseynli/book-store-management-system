@@ -1,6 +1,6 @@
 package com.store.book.service;
 
-import com.store.book.dao.BookDAO;
+import com.store.book.dao.BookRepository;
 import com.store.book.dao.entity.Book;
 import com.store.book.exception.exceptions.ImageIsNotAvailableException;
 import com.store.book.service.impl.BookServiceImpl;
@@ -21,15 +21,15 @@ import java.util.UUID;
 public class CoverImageService {
 
     private final Path uploadDirectory = Paths.get("uploads");
-    private final BookDAO bookDAO;
+    private final BookRepository bookRepository;
     private final BookServiceImpl bookService;
 
-    public CoverImageService(BookDAO bookDAO, BookServiceImpl bookService) throws IOException {
+    public CoverImageService(BookRepository bookRepository, BookServiceImpl bookService) throws IOException {
         this.bookService = bookService;
         if (!Files.exists(uploadDirectory)) {
             Files.createDirectories(uploadDirectory);
         }
-        this.bookDAO = bookDAO;
+        this.bookRepository = bookRepository;
     }
 
     @Transactional
@@ -39,7 +39,7 @@ public class CoverImageService {
         Path filePath = uploadDirectory.resolve(imageName);
         Files.copy(coverImage.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
         book.setCoverImageUrl(filePath.toAbsolutePath().toString());
-        bookDAO.save(book);
+        bookRepository.save(book);
     }
 
     public ResponseEntity<byte[]> getCoverImage(Long bookId) throws IOException {

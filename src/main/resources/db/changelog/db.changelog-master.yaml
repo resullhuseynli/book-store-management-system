@@ -17,3 +17,5 @@ databaseChangeLog:
       file: db/changelog/071025-008-add-is-active-column-to-discount.yaml
   - include:
       file: db/changelog/071225-009-add-columns-created-at-and-updated-at.yaml
+  - include:
+      file: db/changelog/071425-010-create-user-table.yaml

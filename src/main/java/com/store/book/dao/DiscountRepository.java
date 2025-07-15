@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface DiscountDAO extends CrudRepository<Discount,Long> {
+public interface DiscountRepository extends CrudRepository<Discount,Long> {
 
     @Query("SELECT d FROM Discount d WHERE d.endDate < :now AND d.isActive = true")
     List<Discount> findExpiredDiscounts(@Param("now") LocalDateTime now);
