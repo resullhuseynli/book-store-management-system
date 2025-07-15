@@ -6,6 +6,7 @@ import com.store.book.service.DiscountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ public class DiscountController {
 
     private final DiscountService discountService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<DiscountDtoResponse> createDiscount(@Valid @RequestBody DiscountDtoRequest request) {
         return ResponseEntity.ok(discountService.create(request));
@@ -34,6 +36,7 @@ public class DiscountController {
         return ResponseEntity.ok(discountService.getAll());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDiscount(@PathVariable Long id) {
         discountService.deleteById(id);
