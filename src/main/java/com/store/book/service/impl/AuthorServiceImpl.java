@@ -8,6 +8,8 @@ import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.AuthorMapper;
 import com.store.book.service.AuthorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,5 +55,10 @@ public class AuthorServiceImpl implements AuthorService {
 
     public List<Author> getAuthorsByName(String name) {
         return authorRepository.getAuthorsByName(name);
+    }
+
+    @Override
+    public Page<Author> getAllAuthors(Pageable pageable) {
+        return authorRepository.findAll(pageable);
     }
 }

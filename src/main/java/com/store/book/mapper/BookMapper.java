@@ -17,6 +17,7 @@ import java.util.List;
 public interface BookMapper {
 
     Book dtoToEntity(BookDtoRequest bookDtoRequest);
+    List<BookDtoResponse> entityToDtoList(List<Book> bookList);
 
     @Mappings({
             @Mapping(target = "hasDiscount", source = "book", qualifiedByName = "hasDiscount"),

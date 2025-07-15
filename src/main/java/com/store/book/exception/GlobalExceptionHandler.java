@@ -1,5 +1,6 @@
 package com.store.book.exception;
 
+import com.store.book.exception.exceptions.DataIsAlreadyAddedException;
 import com.store.book.exception.exceptions.EntityContainException;
 import com.store.book.exception.exceptions.ImageIsNotAvailableException;
 import com.store.book.exception.exceptions.NotFoundException;
@@ -49,6 +50,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ErrorResponse<String>> handleUsernameNotFoundException(UsernameNotFoundException usernameNotFoundException) {
         return badRequest().body(new ErrorResponse<>(UUID.randomUUID(), usernameNotFoundException.getMessage()));
+    }
+
+    @ExceptionHandler(DataIsAlreadyAddedException.class)
+    public ResponseEntity<ErrorResponse<String>> handleDataIsAlreadyAddedException(DataIsAlreadyAddedException dataIsAlreadyAddedException) {
+        return badRequest().body(new ErrorResponse<>(UUID.randomUUID(), dataIsAlreadyAddedException.getMessage()));
     }
 
     @ExceptionHandler(ImageIsNotAvailableException.class)
