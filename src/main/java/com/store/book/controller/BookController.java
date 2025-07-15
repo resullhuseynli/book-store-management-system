@@ -6,6 +6,9 @@ import com.store.book.enums.Genre;
 import com.store.book.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -68,5 +71,13 @@ public class BookController {
     @GetMapping("/favorite-books-list")
     public ResponseEntity<List<BookDtoResponse>> getFavoriteBooksList() {
         return ResponseEntity.ok(bookService.getFavoriteBooks());
+    }
+
+    @GetMapping("/all-books-with-pages")
+    public ResponseEntity<Page<BookDtoResponse>> getAllBooksWithPages(@RequestParam(defaultValue = "0") int page,
+                                                                      @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(bookService.getAllBooks(pageable));
     }
 }

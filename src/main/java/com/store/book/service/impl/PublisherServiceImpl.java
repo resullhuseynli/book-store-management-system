@@ -8,6 +8,8 @@ import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.PublisherMapper;
 import com.store.book.service.PublisherService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,6 +45,11 @@ public class PublisherServiceImpl implements PublisherService {
         Publisher publisher = getById(id);
         publisher.setName(request.getName());
         return publisherRepository.save(publisher);
+    }
+
+    @Override
+    public Page<Publisher> getAllWithPage(Pageable pageable) {
+        return publisherRepository.findAll(pageable);
     }
 
     @Override

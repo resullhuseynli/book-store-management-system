@@ -16,6 +16,9 @@ import com.store.book.security.CustomUserDetailsService;
 import com.store.book.service.BookService;
 import com.store.book.service.ViewTrackerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +37,7 @@ public class BookServiceImpl implements BookService {
     private final PublisherServiceImpl publisherService;
     private final ViewTrackerService viewTrackerService;
     private final CustomUserDetailsService customUserDetailsService;
-    private final UserEntityRepository  userEntityRepository;
+    private final UserEntityRepository userEntityRepository;
 
     @Override
     public BookDtoResponse create(BookDtoRequest request) {
@@ -105,7 +108,7 @@ public class BookServiceImpl implements BookService {
             bookList = new ArrayList<>();
         }
         Book book = getBookWithDetailsById(bookId);
-        if(bookList.contains(book)) {
+        if (bookList.contains(book)) {
             throw new DataIsAlreadyAddedException("Book was already favoured");
         }
         bookList.add(book);
@@ -119,5 +122,12 @@ public class BookServiceImpl implements BookService {
         UserEntity user = customUserDetailsService.loadUserByUsername(username);
         List<Book> bookList = user.getFavoriteBooks();
         return bookMapper.entityToDtoList(bookList);
+    }
+
+    @Override
+    public Page<BookDtoResponse> getAllBooks(Pageable pageable) {
+        Page<Book> bookPage = bookRepository.findAll(pageable);
+        List<BookDtoResponse> response = bookMapper.entityToDtoList(bookPage.getContent());
+        return new PageImpl<>(response);
     }
 }
