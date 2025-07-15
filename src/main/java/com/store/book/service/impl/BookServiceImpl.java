@@ -1,17 +1,22 @@
 package com.store.book.service.impl;
 
 import com.store.book.dao.BookRepository;
+import com.store.book.dao.UserEntityRepository;
 import com.store.book.dao.dto.BookDtoRequest;
 import com.store.book.dao.dto.BookDtoResponse;
 import com.store.book.dao.entity.Author;
 import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Publisher;
+import com.store.book.dao.entity.UserEntity;
 import com.store.book.enums.Genre;
+import com.store.book.exception.exceptions.DataIsAlreadyAddedException;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.BookMapper;
+import com.store.book.security.CustomUserDetailsService;
 import com.store.book.service.BookService;
 import com.store.book.service.ViewTrackerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,6 +33,8 @@ public class BookServiceImpl implements BookService {
     private final AuthorServiceImpl authorService;
     private final PublisherServiceImpl publisherService;
     private final ViewTrackerService viewTrackerService;
+    private final CustomUserDetailsService customUserDetailsService;
+    private final UserEntityRepository  userEntityRepository;
 
     @Override
     public BookDtoResponse create(BookDtoRequest request) {
@@ -88,5 +95,29 @@ public class BookServiceImpl implements BookService {
             response.add(getById(Long.parseLong(bookId)));
         }
         return response;
+    }
+
+    public List<BookDtoResponse> addFavoriteBook(Long bookId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = customUserDetailsService.loadUserByUsername(username);
+        List<Book> bookList = user.getFavoriteBooks();
+        if (bookList == null) {
+            bookList = new ArrayList<>();
+        }
+        Book book = getBookWithDetailsById(bookId);
+        if(bookList.contains(book)) {
+            throw new DataIsAlreadyAddedException("Book was already favoured");
+        }
+        bookList.add(book);
+        userEntityRepository.save(user);
+        return bookMapper.entityToDtoList(bookList);
+    }
+
+    @Override
+    public List<BookDtoResponse> getFavoriteBooks() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = customUserDetailsService.loadUserByUsername(username);
+        List<Book> bookList = user.getFavoriteBooks();
+        return bookMapper.entityToDtoList(bookList);
     }
 }

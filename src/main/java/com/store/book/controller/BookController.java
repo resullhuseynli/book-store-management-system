@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class BookController {
         return ResponseEntity.ok(bookService.getById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<BookDtoResponse> createBook(@Valid BookDtoRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.create(request));
@@ -41,6 +43,7 @@ public class BookController {
         return ResponseEntity.ok(bookService.getBooksByAuthorId(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBookById(@PathVariable Long id) {
         bookService.deleteById(id);
@@ -55,5 +58,15 @@ public class BookController {
     @GetMapping("/most-viewed")
     public ResponseEntity<List<BookDtoResponse>> getMostViewed() {
         return ResponseEntity.ok(bookService.get10MostViewedBooksForToday());
+    }
+
+    @PostMapping("/favorite-book/{id}")
+    public ResponseEntity<List<BookDtoResponse>> addFavoriteBook(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookService.addFavoriteBook(id));
+    }
+
+    @GetMapping("/favorite-books-list")
+    public ResponseEntity<List<BookDtoResponse>> getFavoriteBooksList() {
+        return ResponseEntity.ok(bookService.getFavoriteBooks());
     }
 }

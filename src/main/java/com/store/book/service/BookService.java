@@ -13,4 +13,6 @@ public interface BookService extends BaseService<BookDtoRequest, BookDtoResponse
     List<BookDtoResponse> getBooksByGenre(Genre genre);
     List<BookDtoResponse> getBooksByAuthorId(Long authorId);
     List<BookDtoResponse> get10MostViewedBooksForToday();
+    List<BookDtoResponse> addFavoriteBook(Long bookId);
+    List<BookDtoResponse> getFavoriteBooks();
 }
