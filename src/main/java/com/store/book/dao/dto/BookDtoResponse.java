@@ -17,6 +17,7 @@ public class BookDtoResponse {
     private Long id;
     private String title;
     private Genre genre;
+    private String description;
     private BigDecimal oldPrice;
     private BigDecimal newPrice;
     private boolean hasDiscount;
@@ -24,4 +25,5 @@ public class BookDtoResponse {
     private List<Language> languages;
     private String authorName;
     private String publisherName;
+    private List<CommentDtoResponse> comments;
 }

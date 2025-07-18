@@ -7,4 +7,6 @@ public interface ViewTrackerService {
     void bookTrackView(Long bookId);
 
     Set<String> getTop10BookIdsForToday();
+
+    Set<String> getTop10BooksLast7Days();
 }

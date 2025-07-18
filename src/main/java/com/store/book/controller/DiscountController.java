@@ -1,6 +1,7 @@
 package com.store.book.controller;
 
 import com.store.book.dao.dto.DiscountDtoRequest;
+import com.store.book.dao.dto.DiscountDtoRequestAll;
 import com.store.book.dao.dto.DiscountDtoResponse;
 import com.store.book.service.DiscountService;
 import jakarta.validation.Valid;
@@ -24,6 +25,13 @@ public class DiscountController {
     @PostMapping
     public ResponseEntity<DiscountDtoResponse> createDiscount(@Valid @RequestBody DiscountDtoRequest request) {
         return ResponseEntity.ok(discountService.create(request));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/add-all")
+    public ResponseEntity<String> addAllDiscount(@Valid @RequestBody DiscountDtoRequestAll request) {
+        discountService.addAll(request);
+        return ResponseEntity.ok("Discount added successfully");
     }
 
     @GetMapping("/active-discounts")

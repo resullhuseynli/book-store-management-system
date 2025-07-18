@@ -49,4 +49,10 @@ public class CommentServiceImpl implements CommentService {
         Comment saved = commentRepository.save(comment);
         return commentMapper.entityToDto(saved);
     }
+
+    @Override
+    public List<CommentDtoResponse> getCommentsByBookId(Long bookId) {
+        List<Comment> bookComments = commentRepository.getCommentsByBookId(bookId);
+        return List.of();
+    }
 }

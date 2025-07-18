@@ -15,5 +15,6 @@ public enum Genre {
     THRILLER,
     HISTORICAL_FICTION,
     SCIENCE,
-    SCIENCE_FICTION
+    SCIENCE_FICTION,
+    ADVENTURE
 }

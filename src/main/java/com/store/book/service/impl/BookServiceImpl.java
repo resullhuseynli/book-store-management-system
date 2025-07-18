@@ -95,7 +95,8 @@ public class BookServiceImpl implements BookService {
         Set<String> viewedBooks = viewTrackerService.getTop10BookIdsForToday();
         List<BookDtoResponse> response = new ArrayList<>();
         for (String bookId : viewedBooks) {
-            response.add(getById(Long.parseLong(bookId)));
+            BookDtoResponse book = bookMapper.entityToDto(getBookWithDetailsById(Long.parseLong(bookId)));
+            response.add(book);
         }
         return response;
     }
@@ -129,5 +130,16 @@ public class BookServiceImpl implements BookService {
         Page<Book> bookPage = bookRepository.findAll(pageable);
         List<BookDtoResponse> response = bookMapper.entityToDtoList(bookPage.getContent());
         return new PageImpl<>(response);
+    }
+
+    @Override
+    public List<BookDtoResponse> getTop10BooksLast7Days() {
+        Set<String> booksIdsForLastWeek = viewTrackerService.getTop10BooksLast7Days();
+        List<BookDtoResponse> allBooks = new ArrayList<>();
+        for (String bookId : booksIdsForLastWeek) {
+            BookDtoResponse book = bookMapper.entityToDto(getBookWithDetailsById(Long.parseLong(bookId)));
+            allBooks.add(book);
+        }
+        return allBooks;
     }
 }

@@ -16,6 +16,11 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    @PostMapping
+    public ResponseEntity<CommentDtoResponse> create(@RequestBody CommentDtoRequest commentDtoRequest) {
+        return ResponseEntity.ok(commentService.create(commentDtoRequest));
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<CommentDtoResponse>> getAll() {
         return ResponseEntity.ok(commentService.getAll());
@@ -24,11 +29,6 @@ public class CommentController {
     @GetMapping("/{id}")
     public ResponseEntity<CommentDtoResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(commentService.getById(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<CommentDtoResponse> create(@RequestBody CommentDtoRequest commentDtoRequest) {
-        return ResponseEntity.ok(commentService.create(commentDtoRequest));
     }
 
     @DeleteMapping("/{id}")

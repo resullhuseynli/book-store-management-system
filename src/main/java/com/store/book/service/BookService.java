@@ -24,4 +24,6 @@ public interface BookService extends BaseService<BookDtoRequest, BookDtoResponse
     List<BookDtoResponse> getFavoriteBooks();
 
     Page<BookDtoResponse> getAllBooks(Pageable pageable);
+
+    List<BookDtoResponse> getTop10BooksLast7Days();
 }

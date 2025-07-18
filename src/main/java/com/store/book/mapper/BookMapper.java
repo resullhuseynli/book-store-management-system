@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {CommentMapper.class})
 public interface BookMapper {
 
     Book dtoToEntity(BookDtoRequest bookDtoRequest);
@@ -24,7 +24,8 @@ public interface BookMapper {
             @Mapping(target = "oldPrice", source = "price"),
             @Mapping(target = "publisherName", source = "publisher.name"),
             @Mapping(target = "authorName", source = "author.name"),
-            @Mapping(target = "newPrice", source = "book", qualifiedByName = "newPrice")
+            @Mapping(target = "newPrice", source = "book", qualifiedByName = "newPrice"),
+            @Mapping(target = "comments", source = "book.comments")
     })
     BookDtoResponse entityToDto(Book book);
 
@@ -40,9 +41,9 @@ public interface BookMapper {
     @Named("newPrice")
     default BigDecimal newPrice(Book book) {
         List<BigDecimal> percentages = new ArrayList<>();
-        BigDecimal newPrice = null;
+        BigDecimal newPrice = book.getPrice();
         if (book.getDiscounts() == null || !hasDiscount(book)) {
-            return book.getPrice();
+            return newPrice;
         } else {
             for (Discount discount : book.getDiscounts()) {
                 if (discount.isActive()) {
@@ -50,7 +51,7 @@ public interface BookMapper {
                 }
             }
             for (BigDecimal percentage : percentages) {
-                newPrice = book.getPrice()
+                newPrice = newPrice
                         .multiply(BigDecimal.valueOf(100).subtract(percentage).abs())
                         .divide(BigDecimal.valueOf(100));
             }

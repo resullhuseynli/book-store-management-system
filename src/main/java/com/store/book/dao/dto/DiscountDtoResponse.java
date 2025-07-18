@@ -17,7 +17,7 @@ public class DiscountDtoResponse {
     private BigDecimal percentage;
     private List<String> bookNames;
     private boolean isActive;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
 }

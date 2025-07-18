@@ -41,6 +41,9 @@ public class Book {
     @Column(name = "book_amount")
     private Integer amount;
 
+    @Column(name = "book_description")
+    private String description;
+
     @Column(name = "book_rating", precision = 3, scale = 1)
     private BigDecimal rating;
 

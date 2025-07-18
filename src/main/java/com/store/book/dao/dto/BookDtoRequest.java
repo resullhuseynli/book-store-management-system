@@ -31,6 +31,7 @@ public class BookDtoRequest {
 
     @Min(value = 0, message = "Page count cannot be negative")
     private Integer pageCount;
+    private String description;
     private List<Language> languages;
     private Long authorId;
     private Long publisherId;

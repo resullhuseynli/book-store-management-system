@@ -25,15 +25,20 @@ public class BookController {
 
     private final BookService bookService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<BookDtoResponse> getBookById(@PathVariable Long id) {
-        return ResponseEntity.ok(bookService.getById(id));
-    }
-
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<BookDtoResponse> createBook(@Valid BookDtoRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.create(request));
+    }
+
+    @PostMapping("/favorite-book/{id}")
+    public ResponseEntity<List<BookDtoResponse>> addFavoriteBook(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookService.addFavoriteBook(id));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BookDtoResponse> getBookById(@PathVariable Long id) {
+        return ResponseEntity.ok(bookService.getById(id));
     }
 
     @GetMapping("/genre")
@@ -46,13 +51,6 @@ public class BookController {
         return ResponseEntity.ok(bookService.getBooksByAuthorId(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBookById(@PathVariable Long id) {
-        bookService.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
-
     @GetMapping("/all-books")
     public ResponseEntity<List<BookDtoResponse>> getAll() {
         return ResponseEntity.ok(bookService.getAll());
@@ -61,11 +59,6 @@ public class BookController {
     @GetMapping("/most-viewed")
     public ResponseEntity<List<BookDtoResponse>> getMostViewed() {
         return ResponseEntity.ok(bookService.get10MostViewedBooksForToday());
-    }
-
-    @PostMapping("/favorite-book/{id}")
-    public ResponseEntity<List<BookDtoResponse>> addFavoriteBook(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(bookService.addFavoriteBook(id));
     }
 
     @GetMapping("/favorite-books-list")
@@ -79,5 +72,17 @@ public class BookController {
     ) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(bookService.getAllBooks(pageable));
+    }
+
+    @GetMapping("/last-7-days-most-viewed")
+    public ResponseEntity<List<BookDtoResponse>> getLast7DaysMostViewed() {
+        return ResponseEntity.ok(bookService.getTop10BooksLast7Days());
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBookById(@PathVariable Long id) {
+        bookService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
