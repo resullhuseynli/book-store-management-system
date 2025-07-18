@@ -3,6 +3,7 @@ package com.store.book.controller;
 import com.store.book.dao.dto.PublisherDtoRequest;
 import com.store.book.dao.entity.Publisher;
 import com.store.book.service.PublisherService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,12 +11,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 @RequestMapping("api/v1/publisher")
 public class PublisherController {
 
@@ -23,7 +26,7 @@ public class PublisherController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<Publisher> createPublisher(@RequestBody PublisherDtoRequest request) {
+    public ResponseEntity<Publisher> createPublisher(@Valid @RequestBody PublisherDtoRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(publisherService.create(request));
     }
 
