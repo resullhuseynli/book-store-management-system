@@ -15,6 +15,4 @@ public class CommentDtoResponse {
     private String userName;
     private String description;
     private Integer rating;
-    private Long bookId;
-    private String bookTitle;
 }

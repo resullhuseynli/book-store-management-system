@@ -24,4 +24,5 @@ public class BookDtoResponse {
     private List<Language> languages;
     private String authorName;
     private String publisherName;
+    private List<CommentDtoResponse> comments;
 }

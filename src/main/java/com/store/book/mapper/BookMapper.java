@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {CommentMapper.class})
 public interface BookMapper {
 
     Book dtoToEntity(BookDtoRequest bookDtoRequest);
@@ -24,7 +24,8 @@ public interface BookMapper {
             @Mapping(target = "oldPrice", source = "price"),
             @Mapping(target = "publisherName", source = "publisher.name"),
             @Mapping(target = "authorName", source = "author.name"),
-            @Mapping(target = "newPrice", source = "book", qualifiedByName = "newPrice")
+            @Mapping(target = "newPrice", source = "book", qualifiedByName = "newPrice"),
+            @Mapping(target = "comments", source = "book.comments")
     })
     BookDtoResponse entityToDto(Book book);
 
