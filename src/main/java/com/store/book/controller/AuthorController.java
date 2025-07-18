@@ -21,28 +21,15 @@ public class AuthorController {
 
     private final AuthorServiceImpl authorService;
 
-    @GetMapping("/all-authors")
-    public ResponseEntity<List<Author>> getAllAuthors() {
-        return ResponseEntity.ok().body(authorService.getAll());
-    }
-
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Author> saveAuthor(@RequestBody AuthorDtoRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authorService.create(request));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<Author> updateAuthor(@RequestBody AuthorDtoRequest request, @PathVariable Long id) {
-        return ResponseEntity.ok().body(authorService.updateAuthor(id, request));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {
-        authorService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/all-authors")
+    public ResponseEntity<List<Author>> getAllAuthors() {
+        return ResponseEntity.ok().body(authorService.getAll());
     }
 
     @GetMapping("/{id}")
@@ -61,5 +48,18 @@ public class AuthorController {
     ) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(authorService.getAllAuthors(pageable));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<Author> updateAuthor(@RequestBody AuthorDtoRequest request, @PathVariable Long id) {
+        return ResponseEntity.ok().body(authorService.updateAuthor(id, request));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {
+        authorService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

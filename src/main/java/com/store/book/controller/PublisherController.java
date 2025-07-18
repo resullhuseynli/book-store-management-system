@@ -21,6 +21,19 @@ public class PublisherController {
 
     private final PublisherService publisherService;
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping
+    public ResponseEntity<Publisher> createPublisher(@RequestBody PublisherDtoRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(publisherService.create(request));
+    }
+
+    @GetMapping("/publishers-with-page")
+    public Page<Publisher> getPublishersWithPage(@RequestParam(defaultValue = "0") Integer page,
+                                                 @RequestParam(defaultValue = "10") Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(publisherService.getAllWithPage(pageable)).getBody();
+    }
+
     @GetMapping
     public ResponseEntity<List<Publisher>> getAllPublishers() {
         return ResponseEntity.ok().body(publisherService.getAll());
@@ -29,12 +42,6 @@ public class PublisherController {
     @GetMapping("/{id}")
     public ResponseEntity<Publisher> getPublisherById(@PathVariable Long id) {
         return ResponseEntity.ok().body(publisherService.getById(id));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
-    public ResponseEntity<Publisher> createPublisher(@RequestBody PublisherDtoRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(publisherService.create(request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -48,12 +55,5 @@ public class PublisherController {
     public ResponseEntity<Void> deletePublisher(@PathVariable Long id) {
         publisherService.deleteById(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/publishers-with-page")
-    public Page<Publisher> getPublishersWithPage(@RequestParam(defaultValue = "0") Integer page,
-                                                 @RequestParam(defaultValue = "10") Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(publisherService.getAllWithPage(pageable)).getBody();
     }
 }
