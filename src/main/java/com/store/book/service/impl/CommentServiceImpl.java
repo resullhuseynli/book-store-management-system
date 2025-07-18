@@ -33,6 +33,7 @@ public class CommentServiceImpl implements CommentService {
         return commentMapper.entityToDto(comment);
     }
 
+    @Override
     public Comment getByIdWithDetails(Long id) {
         return commentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Comment not found"));

@@ -101,6 +101,7 @@ public class BookServiceImpl implements BookService {
         return response;
     }
 
+    @Override
     public List<BookDtoResponse> addFavoriteBook(Long bookId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity user = customUserDetailsService.loadUserByUsername(username);

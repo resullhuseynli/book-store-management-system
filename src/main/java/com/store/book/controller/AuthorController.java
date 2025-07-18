@@ -2,7 +2,7 @@ package com.store.book.controller;
 
 import com.store.book.dao.dto.AuthorDtoRequest;
 import com.store.book.dao.entity.Author;
-import com.store.book.service.impl.AuthorServiceImpl;
+import com.store.book.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthorController {
 
-    private final AuthorServiceImpl authorService;
+    private final AuthorService authorService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
