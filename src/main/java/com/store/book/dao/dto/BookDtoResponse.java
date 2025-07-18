@@ -18,6 +18,7 @@ public class BookDtoResponse {
     private String title;
     private Genre genre;
     private String description;
+    private BigDecimal rating;
     private BigDecimal oldPrice;
     private BigDecimal newPrice;
     private boolean hasDiscount;

@@ -12,6 +12,8 @@ import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {BookRepository.class, CustomUserDetailsService.class})
@@ -34,6 +36,17 @@ public abstract class CommentMapper {
         Book book = bookRepository.findById(request.getBookId())
                 .orElseThrow(() -> new NotFoundException("Book not found"));
         comment.setBook(book);
+        if(book.getRating() == null) {
+            book.setRating(BigDecimal.valueOf(comment.getRating()));
+        } else {
+            BigDecimal length = BigDecimal.valueOf(book.getComments().size());
+            BigDecimal newRating = book.getRating()
+                    .multiply(length)
+                    .add(BigDecimal.valueOf(request.getRating()))
+                    .divide(length.add(BigDecimal.ONE), RoundingMode.HALF_UP);
+            book.setRating(newRating);
+        }
+        bookRepository.save(book);
 
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         comment.setUser(customUserDetailsService.loadUserByUsername(userName));
