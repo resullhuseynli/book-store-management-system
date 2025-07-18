@@ -28,18 +28,18 @@ public class DiscountController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/add-all")
+    @PostMapping("/all")
     public ResponseEntity<String> addAllDiscount(@Valid @RequestBody DiscountDtoRequestAll request) {
         discountService.addAll(request);
         return ResponseEntity.ok("Discount added successfully");
     }
 
-    @GetMapping("/active-discounts")
+    @GetMapping("/active")
     public ResponseEntity<List<DiscountDtoResponse>> getAllActiveDiscounts() {
         return ResponseEntity.ok(discountService.getAllActiveDiscounts());
     }
 
-    @GetMapping("/all-discounts")
+    @GetMapping("/all")
     public ResponseEntity<List<DiscountDtoResponse>> getAllDiscounts() {
         return ResponseEntity.ok(discountService.getAll());
     }

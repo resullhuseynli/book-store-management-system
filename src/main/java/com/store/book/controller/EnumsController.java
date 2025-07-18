@@ -14,12 +14,12 @@ import java.util.List;
 @RequestMapping("/api/v1/enums")
 public class EnumsController {
 
-    @GetMapping("/get-all-genres")
+    @GetMapping("/all-genres")
     public ResponseEntity<List<Genre>>  getAllGenres() {
         return ResponseEntity.ok().body(Arrays.asList(Genre.values()));
     }
 
-    @GetMapping("/get-all-languages")
+    @GetMapping("/all-languages")
     public ResponseEntity<List<Language>> getAllLanguages() {
         return ResponseEntity.ok().body(Arrays.asList(Language.values()));
     }

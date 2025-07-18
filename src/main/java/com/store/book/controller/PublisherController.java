@@ -27,7 +27,7 @@ public class PublisherController {
         return ResponseEntity.status(HttpStatus.CREATED).body(publisherService.create(request));
     }
 
-    @GetMapping("/publishers-with-page")
+    @GetMapping("/with-page")
     public Page<Publisher> getPublishersWithPage(@RequestParam(defaultValue = "0") Integer page,
                                                  @RequestParam(defaultValue = "10") Integer size) {
         Pageable pageable = PageRequest.of(page, size);
