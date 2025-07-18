@@ -2,6 +2,7 @@ package com.store.book.controller;
 
 import com.store.book.dao.dto.BookDtoRequest;
 import com.store.book.dao.dto.BookDtoResponse;
+import com.store.book.dao.dto.QuantityDtoRequest;
 import com.store.book.enums.Genre;
 import com.store.book.service.BookService;
 import jakarta.validation.Valid;
@@ -82,6 +83,13 @@ public class BookController {
     @GetMapping("/most-rating")
     public ResponseEntity<List<BookDtoResponse>> get10MostRatingBooks() {
         return ResponseEntity.ok(bookService.get10BooksWithMostRating());
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/quantity")
+    public ResponseEntity<Void> updateQuantity(@Valid @RequestBody QuantityDtoRequest request) {
+        bookService.updateQuantity(request);
+        return ResponseEntity.noContent().build();
     }
 
     @PreAuthorize("hasRole('ADMIN')")
