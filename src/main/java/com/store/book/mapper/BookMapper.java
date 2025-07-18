@@ -41,9 +41,9 @@ public interface BookMapper {
     @Named("newPrice")
     default BigDecimal newPrice(Book book) {
         List<BigDecimal> percentages = new ArrayList<>();
-        BigDecimal newPrice = null;
+        BigDecimal newPrice = book.getPrice();
         if (book.getDiscounts() == null || !hasDiscount(book)) {
-            return book.getPrice();
+            return newPrice;
         } else {
             for (Discount discount : book.getDiscounts()) {
                 if (discount.isActive()) {
@@ -51,7 +51,7 @@ public interface BookMapper {
                 }
             }
             for (BigDecimal percentage : percentages) {
-                newPrice = book.getPrice()
+                newPrice = newPrice
                         .multiply(BigDecimal.valueOf(100).subtract(percentage).abs())
                         .divide(BigDecimal.valueOf(100));
             }
