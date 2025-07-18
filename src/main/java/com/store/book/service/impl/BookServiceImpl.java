@@ -14,7 +14,6 @@ import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.BookMapper;
 import com.store.book.security.CustomUserDetailsService;
 import com.store.book.service.BookService;
-import com.store.book.service.CommentService;
 import com.store.book.service.ViewTrackerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
