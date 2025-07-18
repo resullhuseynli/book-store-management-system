@@ -80,4 +80,9 @@ public class BookController {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(bookService.getAllBooks(pageable));
     }
+
+    @GetMapping("/last-7-days-most-viewed")
+    public ResponseEntity<List<BookDtoResponse>> getLast7DaysMostViewed() {
+        return ResponseEntity.ok(bookService.getTop10BooksLast7Days());
+    }
 }

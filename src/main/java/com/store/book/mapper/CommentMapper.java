@@ -8,7 +8,6 @@ import com.store.book.dao.entity.Comment;
 import com.store.book.dao.entity.UserEntity;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.security.CustomUserDetailsService;
-import com.store.book.service.BookService;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +32,7 @@ public abstract class CommentMapper {
     @AfterMapping
     protected void afterDtoToEntity(CommentDtoRequest request, @MappingTarget Comment comment) {
         Book book = bookRepository.findById(request.getBookId())
-                        .orElseThrow(() -> new NotFoundException("Book not found"));
+                .orElseThrow(() -> new NotFoundException("Book not found"));
         comment.setBook(book);
 
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
