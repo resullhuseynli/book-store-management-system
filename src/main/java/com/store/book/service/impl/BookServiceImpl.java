@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -101,6 +102,7 @@ public class BookServiceImpl implements BookService {
         return response;
     }
 
+    @Override
     public List<BookDtoResponse> addFavoriteBook(Long bookId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity user = customUserDetailsService.loadUserByUsername(username);
@@ -141,5 +143,13 @@ public class BookServiceImpl implements BookService {
             allBooks.add(book);
         }
         return allBooks;
+    }
+
+    @Override
+    public List<BookDtoResponse> get10BooksWithMostRating() {
+        return getAll().stream()
+                .sorted(Comparator.comparing(BookDtoResponse::getRating).reversed())
+                .limit(10)
+                .toList();
     }
 }

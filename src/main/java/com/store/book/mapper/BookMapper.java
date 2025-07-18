@@ -25,7 +25,8 @@ public interface BookMapper {
             @Mapping(target = "publisherName", source = "publisher.name"),
             @Mapping(target = "authorName", source = "author.name"),
             @Mapping(target = "newPrice", source = "book", qualifiedByName = "newPrice"),
-            @Mapping(target = "comments", source = "book.comments")
+            @Mapping(target = "comments", source = "book.comments"),
+            @Mapping(target = "rating", source = "rating", defaultValue = "0")
     })
     BookDtoResponse entityToDto(Book book);
 
@@ -42,9 +43,7 @@ public interface BookMapper {
     default BigDecimal newPrice(Book book) {
         List<BigDecimal> percentages = new ArrayList<>();
         BigDecimal newPrice = book.getPrice();
-        if (book.getDiscounts() == null || !hasDiscount(book)) {
-            return newPrice;
-        } else {
+        if (book.getDiscounts() != null && hasDiscount(book)) {
             for (Discount discount : book.getDiscounts()) {
                 if (discount.isActive()) {
                     percentages.add(discount.getPercentage());
@@ -55,7 +54,7 @@ public interface BookMapper {
                         .multiply(BigDecimal.valueOf(100).subtract(percentage).abs())
                         .divide(BigDecimal.valueOf(100));
             }
-            return newPrice;
         }
+        return newPrice;
     }
 }

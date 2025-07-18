@@ -40,6 +40,7 @@ public class AuthorServiceImpl implements AuthorService {
         return authorRepository.save(authorMapper.dtoToEntity(request));
     }
 
+    @Override
     public Author updateAuthor(Long id, AuthorDtoRequest request) {
         Author author = getById(id);
         author.setName(request.getName());
@@ -53,6 +54,7 @@ public class AuthorServiceImpl implements AuthorService {
         authorRepository.delete(author);
     }
 
+    @Override
     public List<Author> getAuthorsByName(String name) {
         return authorRepository.getAuthorsByName(name);
     }

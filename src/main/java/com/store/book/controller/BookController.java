@@ -79,6 +79,11 @@ public class BookController {
         return ResponseEntity.ok(bookService.getTop10BooksLast7Days());
     }
 
+    @GetMapping("/most-rating")
+    public ResponseEntity<List<BookDtoResponse>> get10MostRatingBooks() {
+        return ResponseEntity.ok(bookService.get10BooksWithMostRating());
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBookById(@PathVariable Long id) {
