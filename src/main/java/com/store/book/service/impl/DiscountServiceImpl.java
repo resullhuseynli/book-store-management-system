@@ -3,6 +3,7 @@ package com.store.book.service.impl;
 import com.store.book.dao.BookRepository;
 import com.store.book.dao.DiscountRepository;
 import com.store.book.dao.dto.DiscountDtoRequest;
+import com.store.book.dao.dto.DiscountDtoRequestAll;
 import com.store.book.dao.dto.DiscountDtoResponse;
 import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Discount;
@@ -32,8 +33,6 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public DiscountDtoResponse create(DiscountDtoRequest request) {
         Discount discount = discountMapper.dtoToEntity(request);
-        discount.setActive(LocalDateTime.now().isAfter(discount.getStartDate()) &&
-                           LocalDateTime.now().isBefore(discount.getEndDate()));
         List<Book> books = new ArrayList<>();
         request.getBookIds().forEach(bookId -> {
             Book book = bookService.getBookWithDetailsById(bookId);
@@ -45,6 +44,16 @@ public class DiscountServiceImpl implements DiscountService {
         discountRepository.save(discount);
         bookRepository.saveAll(books);
         return discountMapper.entityToDto(discount);
+    }
+
+    @Transactional
+    public void addAll(DiscountDtoRequestAll request) {
+        List<Long> booksIds = bookRepository.findAll().stream()
+                .map(Book::getId)
+                .toList();
+        DiscountDtoRequest dtoRequest = discountMapper.dtoToDto(request);
+        dtoRequest.setBookIds(booksIds);
+        create(dtoRequest);
     }
 
     @PostConstruct
