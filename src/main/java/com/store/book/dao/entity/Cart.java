@@ -28,7 +28,7 @@ public class Cart {
     private UserEntity user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private List<CartBook> cartBook;
+    private List<Item> item;
 
     @Column(name = "total_price")
     private BigDecimal totalPrice;

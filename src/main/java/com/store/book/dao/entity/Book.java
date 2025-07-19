@@ -87,7 +87,7 @@ public class Book {
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartBook> cartBook;
+    private List<Item> item;
 
     @Transient
     private Long viewCount;
