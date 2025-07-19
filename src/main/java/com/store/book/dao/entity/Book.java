@@ -38,6 +38,9 @@ public class Book {
     @Column(name = "book_price", precision = 12, scale = 2)
     private BigDecimal price;
 
+    @Column(name = "book_new_price", precision = 12, scale = 2)
+    private BigDecimal newPrice;
+
     @Column(name = "book_amount")
     private Integer amount;
 
