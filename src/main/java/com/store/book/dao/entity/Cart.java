@@ -30,9 +30,6 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<Item> item;
 
-    @Column(name = "total_price")
-    private BigDecimal totalPrice;
-
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
