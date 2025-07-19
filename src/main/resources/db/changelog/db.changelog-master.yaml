@@ -29,3 +29,7 @@ databaseChangeLog:
       file: db/changelog/071925-014-create-cart-table.yaml
   - include:
       file: db/changelog/071925-015-create-item-table.yaml
+  - include:
+      file: db/changelog/071925-016-add-new_price-column-to-books.yaml
+  - include:
+      file: db/changelog/071925-017-delete-total_price-column-from-cart.yaml
