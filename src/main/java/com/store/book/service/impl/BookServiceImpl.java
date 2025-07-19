@@ -4,6 +4,7 @@ import com.store.book.dao.BookRepository;
 import com.store.book.dao.UserEntityRepository;
 import com.store.book.dao.dto.BookDtoRequest;
 import com.store.book.dao.dto.BookDtoResponse;
+import com.store.book.dao.dto.QuantityDtoRequest;
 import com.store.book.dao.entity.Author;
 import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Publisher;
@@ -151,5 +152,12 @@ public class BookServiceImpl implements BookService {
                 .sorted(Comparator.comparing(BookDtoResponse::getRating).reversed())
                 .limit(10)
                 .toList();
+    }
+
+    @Override
+    public void updateQuantity(QuantityDtoRequest request) {
+        Book book = getBookWithDetailsById(request.getBookId());
+        book.setAmount(request.getQuantity() + book.getAmount());
+        bookRepository.save(book);
     }
 }

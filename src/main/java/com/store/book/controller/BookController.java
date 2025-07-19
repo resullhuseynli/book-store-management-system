@@ -2,6 +2,7 @@ package com.store.book.controller;
 
 import com.store.book.dao.dto.BookDtoRequest;
 import com.store.book.dao.dto.BookDtoResponse;
+import com.store.book.dao.dto.QuantityDtoRequest;
 import com.store.book.enums.Genre;
 import com.store.book.service.BookService;
 import jakarta.validation.Valid;
@@ -36,17 +37,17 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.addFavoriteBook(id));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/public/{id}")
     public ResponseEntity<BookDtoResponse> getBookById(@PathVariable Long id) {
         return ResponseEntity.ok(bookService.getById(id));
     }
 
-    @GetMapping("/genre")
+    @GetMapping("/public/genre")
     public ResponseEntity<List<BookDtoResponse>> getBooksByGenre(@RequestParam Genre genre) {
         return ResponseEntity.ok(bookService.getBooksByGenre(genre));
     }
 
-    @GetMapping("/author")
+    @GetMapping("/public/author")
     public ResponseEntity<List<BookDtoResponse>> getBooksByAuthor(@RequestParam Long id) {
         return ResponseEntity.ok(bookService.getBooksByAuthorId(id));
     }
@@ -56,17 +57,17 @@ public class BookController {
         return ResponseEntity.ok(bookService.getAll());
     }
 
-    @GetMapping("/most-viewed")
+    @GetMapping("/public/most-viewed")
     public ResponseEntity<List<BookDtoResponse>> getMostViewed() {
         return ResponseEntity.ok(bookService.get10MostViewedBooksForToday());
     }
 
-    @GetMapping("/favorite-books-list")
+    @GetMapping("/public/favorite-books-list")
     public ResponseEntity<List<BookDtoResponse>> getFavoriteBooksList() {
         return ResponseEntity.ok(bookService.getFavoriteBooks());
     }
 
-    @GetMapping("/all-books-with-pages")
+    @GetMapping("/public/all-books-with-pages")
     public ResponseEntity<Page<BookDtoResponse>> getAllBooksWithPages(@RequestParam(defaultValue = "0") int page,
                                                                       @RequestParam(defaultValue = "10") int size
     ) {
@@ -74,14 +75,21 @@ public class BookController {
         return ResponseEntity.ok(bookService.getAllBooks(pageable));
     }
 
-    @GetMapping("/last-7-days-most-viewed")
+    @GetMapping("/public/last-7-days-most-viewed")
     public ResponseEntity<List<BookDtoResponse>> getLast7DaysMostViewed() {
         return ResponseEntity.ok(bookService.getTop10BooksLast7Days());
     }
 
-    @GetMapping("/most-rating")
+    @GetMapping("/public/most-rating")
     public ResponseEntity<List<BookDtoResponse>> get10MostRatingBooks() {
         return ResponseEntity.ok(bookService.get10BooksWithMostRating());
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/quantity")
+    public ResponseEntity<Void> updateQuantity(@Valid @RequestBody QuantityDtoRequest request) {
+        bookService.updateQuantity(request);
+        return ResponseEntity.noContent().build();
     }
 
     @PreAuthorize("hasRole('ADMIN')")

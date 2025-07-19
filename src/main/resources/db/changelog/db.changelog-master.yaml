@@ -25,3 +25,7 @@ databaseChangeLog:
       file: db/changelog/071525-012-create-comments-table.yaml
   - include:
       file: db/changelog/071825-013-add-description-field-to-books.yaml
+  - include:
+      file: db/changelog/071925-014-create-cart-table.yaml
+  - include:
+      file: db/changelog/071925-015-create-item-table.yaml

@@ -1,9 +1,6 @@
 package com.store.book.exception;
 
-import com.store.book.exception.exceptions.DataIsAlreadyAddedException;
-import com.store.book.exception.exceptions.EntityContainException;
-import com.store.book.exception.exceptions.ImageIsNotAvailableException;
-import com.store.book.exception.exceptions.NotFoundException;
+import com.store.book.exception.exceptions.*;
 import com.store.book.exception.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +62,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse<String>> handleBadCredentialsException(BadCredentialsException badCredentialsException) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse<>(UUID.randomUUID(), badCredentialsException.getMessage()));
+    }
+
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public ResponseEntity<ErrorResponse<String>> handleUserAlreadyExistException(UserAlreadyExistException userAlreadyExistException) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse<>(UUID.randomUUID(), userAlreadyExistException.getMessage()));
     }
 
     private Map<String, List<String>> getErrorsMap(List<String> errors) {

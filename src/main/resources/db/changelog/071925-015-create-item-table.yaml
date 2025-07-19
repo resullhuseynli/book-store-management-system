@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 071925-015-create-item-table
+      author: Resul Huseynli
+      changes:
+        - createTable:
+            tableName: item
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: cart_id
+                  type: BIGINT
+              - column:
+                  name: book_id
+                  type: BIGINT
+              - column:
+                  name: item_quantity
+                  type: INT
+              - column:
+                  name: item_total_price
+                  type: DECIMAL(19,2)
+              - column:
+                  name: item_price
+                  type: DECIMAL(19,2)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+
+        - addForeignKeyConstraint:
+            baseTableName: item
+            baseColumnNames: cart_id
+            referencedTableName: carts
+            referencedColumnNames: cart_id
+            constraintName: fk_item_cart
+
+        - addForeignKeyConstraint:
+            baseTableName: item
+            baseColumnNames: book_id
+            referencedTableName: books
+            referencedColumnNames: book_id
+            constraintName: fk_item_book

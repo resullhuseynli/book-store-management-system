@@ -2,6 +2,7 @@ package com.store.book.service;
 
 import com.store.book.dao.dto.BookDtoRequest;
 import com.store.book.dao.dto.BookDtoResponse;
+import com.store.book.dao.dto.QuantityDtoRequest;
 import com.store.book.dao.entity.Book;
 import com.store.book.enums.Genre;
 import org.springframework.data.domain.Page;
@@ -28,4 +29,6 @@ public interface BookService extends BaseService<BookDtoRequest, BookDtoResponse
     List<BookDtoResponse> getTop10BooksLast7Days();
 
     List<BookDtoResponse> get10BooksWithMostRating();
+
+    void updateQuantity(QuantityDtoRequest request);
 }

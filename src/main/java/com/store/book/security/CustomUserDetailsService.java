@@ -1,8 +1,10 @@
 package com.store.book.security;
 
+import com.store.book.dao.CartRepository;
 import com.store.book.dao.UserEntityRepository;
 import com.store.book.dao.dto.AuthDtoRequest;
 import com.store.book.dao.dto.UserDtoUpdate;
+import com.store.book.dao.entity.Cart;
 import com.store.book.dao.entity.UserEntity;
 import com.store.book.enums.Role;
 import com.store.book.exception.exceptions.UserAlreadyExistException;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserEntityRepository userRepository;
+    private final CartRepository cartRepository;
 
     @Override
     public UserEntity loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -35,6 +38,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         userEntity.setUserName(request.getUsername());
         userEntity.setRole(Role.USER);
         userRepository.save(userEntity);
+        Cart cart = new Cart();
+        cart.setUser(userEntity);
+        cartRepository.save(cart);
     }
 
     public void updateUser(UserDtoUpdate update) {
