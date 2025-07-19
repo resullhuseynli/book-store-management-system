@@ -24,7 +24,7 @@ public class CartService {
     public CartDtoResponse get() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity user = customUserDetailsService.loadUserByUsername(username);
-        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new NotFoundException("User not found"));
+        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new NotFoundException("Cart not found"));
         return cartMapper.entityToDto(cart);
     }
 
