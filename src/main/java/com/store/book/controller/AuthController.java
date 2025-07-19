@@ -27,7 +27,7 @@ public class AuthController {
     private final CustomUserDetailsService userDetailsService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody AuthDtoRequest request) {
+    public ResponseEntity<AuthDtoResponse> login(@Valid @RequestBody AuthDtoRequest request) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
