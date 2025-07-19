@@ -61,7 +61,6 @@ public class UserEntity implements UserDetails {
     )
     private List<Book> favoriteBooks;
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + this.getRole().name()));
