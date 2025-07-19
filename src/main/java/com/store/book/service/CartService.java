@@ -6,7 +6,6 @@ import com.store.book.dao.entity.Cart;
 import com.store.book.dao.entity.UserEntity;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.CartMapper;
-import com.store.book.mapper.ItemMapper;
 import com.store.book.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 public class CartService {
 
     private final CartRepository cartRepository;
-    private final ItemMapper itemMapper;
     private final CustomUserDetailsService customUserDetailsService;
     private final CartMapper cartMapper;
 

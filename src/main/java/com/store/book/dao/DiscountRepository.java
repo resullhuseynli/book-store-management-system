@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface DiscountRepository extends CrudRepository<Discount,Long> {
 
-    @Query("SELECT d FROM Discount d WHERE d.endDate < :now AND d.isActive = true")
+    @Query("SELECT d FROM Discount d LEFT JOIN FETCH d.books WHERE d.endDate < :now AND d.isActive = true")
     List<Discount> findExpiredDiscounts(@Param("now") LocalDateTime now);
 
     @Query("SELECT d FROM Discount d WHERE d.isActive = true")

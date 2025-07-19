@@ -32,12 +32,6 @@ public class Item {
     @Column(name = "item_quantity")
     private Integer quantity;
 
-    @Column(name = "item_total_price")
-    private BigDecimal itemTotalPrice;
-
-    @Column(name = "item_price")
-    private BigDecimal itemPrice;
-
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;

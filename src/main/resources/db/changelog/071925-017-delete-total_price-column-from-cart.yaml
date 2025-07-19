@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 071925-017-delete-total_price-column-from-cart
+      author: Resul Huseynli
+      changes:
+        - dropColumn:
+            tableName: carts
+            columnName: total_price

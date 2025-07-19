@@ -10,11 +10,11 @@ import com.store.book.dao.entity.Discount;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.DiscountMapper;
 import com.store.book.service.DiscountService;
-import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +39,7 @@ public class DiscountServiceImpl implements DiscountService {
             books.add(book);
             if (book.getDiscounts() == null) book.setDiscounts(new ArrayList<>());
             book.getDiscounts().add(discount);
+            calculateNewPrice(book);
         });
         discount.setBooks(books);
         discountRepository.save(discount);
@@ -56,11 +57,29 @@ public class DiscountServiceImpl implements DiscountService {
         create(dtoRequest);
     }
 
-    @PostConstruct
+    @Transactional
     public void checkActiveDiscounts() {
-        List<Discount> activeDiscounts = discountRepository.findExpiredDiscounts(LocalDateTime.now());
-        activeDiscounts.forEach(discount -> discount.setActive(false));
-        discountRepository.saveAll(activeDiscounts);
+        List<Discount> expiredDiscounts = discountRepository.findExpiredDiscounts(LocalDateTime.now());
+        for (Discount discount : expiredDiscounts) {
+            discount.setActive(false);
+            discount.getBooks().forEach(this::calculateNewPrice);
+        }
+        discountRepository.saveAll(expiredDiscounts);
+    }
+
+    private void calculateNewPrice(Book book) {
+        BigDecimal originalPrice = book.getPrice();
+        BigDecimal newPrice = originalPrice;
+
+        for (Discount dis : book.getDiscounts()) {
+            if (dis.isActive()) {
+                BigDecimal discountAmount = originalPrice
+                        .multiply(dis.getPercentage())
+                        .divide(BigDecimal.valueOf(100));
+                newPrice = newPrice.subtract(discountAmount);
+            }
+        }
+        book.setNewPrice(newPrice);
     }
 
     @Override
@@ -91,6 +110,7 @@ public class DiscountServiceImpl implements DiscountService {
         Discount discount = discountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Discount not found"));
         discount.setActive(false);
+        discount.getBooks().forEach(this::calculateNewPrice);
         discountRepository.save(discount);
     }
 }
