@@ -4,6 +4,7 @@ import com.store.book.service.CoverImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,7 @@ public class CoverImageController {
 
     private final CoverImageService coverImageService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/upload/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadCoverImage(@PathVariable Long id, @RequestPart("file") MultipartFile coverImage) throws IOException {
 
