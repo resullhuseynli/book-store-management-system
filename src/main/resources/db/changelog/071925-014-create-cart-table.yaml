@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 071925-014-create-cart-table
+      author: Resul Huseynli
+      changes:
+        - createTable:
+            tableName: carts
+            columns:
+              - column:
+                  name: cart_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_price
+                  type: DECIMAL(19,2)
+
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+
+        - addForeignKeyConstraint:
+            baseTableName: carts
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: user_id
+            constraintName: fk_cart_user
