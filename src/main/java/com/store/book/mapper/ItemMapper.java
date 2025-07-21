@@ -7,6 +7,7 @@ import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Cart;
 import com.store.book.dao.entity.Item;
 import com.store.book.dao.entity.UserEntity;
+import com.store.book.enums.Status;
 import com.store.book.security.CustomUserDetailsService;
 import com.store.book.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -63,6 +64,7 @@ public abstract class ItemMapper {
         return cartRepository.findByUser(user).orElseGet(() -> {
             Cart newCart = new Cart();
             newCart.setUser(user);
+            newCart.setStatus(Status.ACTIVE);
             return cartRepository.save(newCart);
         });
     }

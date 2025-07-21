@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 072125-018-add-status-column-to-cart
+      author: Resul Huseynli
+      changes:
+        - addColumn:
+            tableName: carts
+            columns:
+              - column:
+                  name: cart_status
+                  type: VARCHAR(20)

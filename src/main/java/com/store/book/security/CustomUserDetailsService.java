@@ -7,6 +7,7 @@ import com.store.book.dao.dto.UserDtoUpdate;
 import com.store.book.dao.entity.Cart;
 import com.store.book.dao.entity.UserEntity;
 import com.store.book.enums.Role;
+import com.store.book.enums.Status;
 import com.store.book.exception.exceptions.UserAlreadyExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,6 +41,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         userRepository.save(userEntity);
         Cart cart = new Cart();
         cart.setUser(userEntity);
+        cart.setStatus(Status.ACTIVE);
         cartRepository.save(cart);
     }
 
