@@ -5,6 +5,7 @@ import com.store.book.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +19,11 @@ public class CartController {
     @GetMapping("/by-user")
     public ResponseEntity<CartDtoResponse> get() {
         return ResponseEntity.ok(cartService.get());
+    }
+
+    @PostMapping
+    public ResponseEntity<CartDtoResponse> buy() {
+        return ResponseEntity.ok(cartService.buy());
     }
 
 }

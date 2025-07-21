@@ -1,16 +1,20 @@
 package com.store.book.service.impl;
 
+import com.store.book.dao.BookRepository;
 import com.store.book.dao.CartRepository;
 import com.store.book.dao.ItemRepository;
 import com.store.book.dao.dto.ItemDtoRequest;
 import com.store.book.dao.dto.ItemDtoResponse;
+import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Cart;
 import com.store.book.dao.entity.Item;
 import com.store.book.dao.entity.UserEntity;
+import com.store.book.exception.exceptions.NotEnoughBookException;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.ItemMapper;
 import com.store.book.security.CustomUserDetailsService;
 import com.store.book.service.ItemService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,6 +30,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemMapper itemMapper;
     private final CustomUserDetailsService customUserDetailsService;
     private final CartRepository cartRepository;
+    private final BookRepository bookRepository;
 
     @Override
     public ItemDtoResponse getById(Long id) {
@@ -53,6 +58,18 @@ public class ItemServiceImpl implements ItemService {
                 .filter(cartBook -> cartBook.getCart().equals(cart))
                 .map(itemMapper::entityToDto)
                 .toList();
+    }
+
+    @Override
+    @Transactional
+    public void buyItem(Item item) {
+        Book book = item.getBook();
+        book.setAmount(book.getAmount() - item.getQuantity());
+        if(book.getAmount() <= 0) {
+            throw new NotEnoughBookException("We have not enough books!");
+        }
+        bookRepository.save(book);
+        itemMapper.entityToDto(item);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.store.book.dao.dto.UserDtoUpdate;
 import com.store.book.dao.entity.Cart;
 import com.store.book.dao.entity.UserEntity;
 import com.store.book.enums.Role;
+import com.store.book.enums.Status;
 import com.store.book.exception.exceptions.UserAlreadyExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +16,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
@@ -37,9 +40,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         userEntity.setPassword(passwordEncoder().encode(request.getPassword()));
         userEntity.setUserName(request.getUsername());
         userEntity.setRole(Role.USER);
+        userEntity.setMoney(BigDecimal.ZERO);
         userRepository.save(userEntity);
         Cart cart = new Cart();
         cart.setUser(userEntity);
+        cart.setStatus(Status.ACTIVE);
         cartRepository.save(cart);
     }
 

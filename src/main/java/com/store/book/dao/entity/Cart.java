@@ -1,11 +1,11 @@
 package com.store.book.dao.entity;
 
+import com.store.book.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class Cart {
     @Column(name = "cart_id")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
@@ -33,6 +33,10 @@ public class Cart {
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "cart_status")
+    private Status status;
 
     @UpdateTimestamp
     @Column(name = "updated_at")

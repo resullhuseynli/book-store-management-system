@@ -33,3 +33,7 @@ databaseChangeLog:
       file: db/changelog/071925-016-add-new_price-column-to-books.yaml
   - include:
       file: db/changelog/071925-017-delete-total_price-column-from-cart.yaml
+  - include:
+      file: db/changelog/072125-018-add-status-column-to-cart.yaml
+  - include:
+      file: db/changelog/072125-019-add-column-money-to-user.yaml
