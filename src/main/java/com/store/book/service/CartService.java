@@ -43,7 +43,7 @@ public class CartService {
         BigDecimal total = BigDecimal.ZERO;
         for (Item item : cart.getItem()) {
             itemService.buyItem(item);
-            total = total.add((BigDecimal.valueOf(item.getQuantity()).multiply(item.getBook().getPrice())));
+            total = total.add((BigDecimal.valueOf(item.getQuantity()).multiply(item.getBook().getNewPrice())));
         }
         if (!(buyBooks(user, total))) {
             throw new NotEnoughMoneyException("Insufficient Amount");
