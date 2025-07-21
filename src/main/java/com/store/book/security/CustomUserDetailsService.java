@@ -17,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -38,6 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         userEntity.setPassword(passwordEncoder().encode(request.getPassword()));
         userEntity.setUserName(request.getUsername());
         userEntity.setRole(Role.USER);
+        userEntity.setMoney(BigDecimal.ZERO);
         userRepository.save(userEntity);
         Cart cart = new Cart();
         cart.setUser(userEntity);
