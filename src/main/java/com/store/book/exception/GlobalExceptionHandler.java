@@ -27,6 +27,16 @@ public class GlobalExceptionHandler {
         return badRequest().body(new ErrorResponse<>(UUID.randomUUID(), entityContainException.getMessage()));
     }
 
+    @ExceptionHandler(NotEnoughMoneyException.class)
+    public ResponseEntity<ErrorResponse<String>> handleNotEnoughMoneyException(NotEnoughMoneyException notEnoughMoneyException) {
+        return badRequest().body(new ErrorResponse<>(UUID.randomUUID(), notEnoughMoneyException.getMessage()));
+    }
+
+    @ExceptionHandler(NotEnoughBookException.class)
+    public ResponseEntity<ErrorResponse<String>> handleNotEnoughItemException(NotEnoughBookException notEnoughBookException) {
+        return badRequest().body(new ErrorResponse<>(UUID.randomUUID(), notEnoughBookException.getMessage()));
+    }
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse<String>> handleNotFoundException(NotFoundException notFoundException) {
         return badRequest().body(new ErrorResponse<>(UUID.randomUUID(), notFoundException.getMessage()));
