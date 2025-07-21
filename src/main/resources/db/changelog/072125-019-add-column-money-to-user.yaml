@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 072125-019-add-column-money-to-user
+      author: Resul Huseynli
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: user_money
+                  type: DECIMAL(12,2)
