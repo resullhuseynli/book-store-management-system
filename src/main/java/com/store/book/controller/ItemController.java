@@ -18,13 +18,29 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public ResponseEntity<ItemDtoResponse> addItem(@RequestBody ItemDtoRequest request){
+    public ResponseEntity<ItemDtoResponse> addItem(@RequestBody ItemDtoRequest request) {
         return ResponseEntity.ok(itemService.create(request));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all-users")
-    public ResponseEntity<List<ItemDtoResponse>> getAllItems(){
+    public ResponseEntity<List<ItemDtoResponse>> getAllItems() {
         return ResponseEntity.ok(itemService.getAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ItemDtoResponse> getItemById(@PathVariable Long id) {
+        return ResponseEntity.ok(itemService.getById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ItemDtoResponse>> getAllItemsByCart() {
+        return ResponseEntity.ok(itemService.getAllItemsByCart());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteItemById(@PathVariable Long id) {
+        itemService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
