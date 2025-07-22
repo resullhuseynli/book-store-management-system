@@ -13,7 +13,7 @@ import lombok.Setter;
 public class UserDtoRequest {
 
     @NotNull
-    @NotBlank
+    @NotBlank(message = "NotBlank")
     @NotEmpty
     private String username;
 
@@ -22,13 +22,13 @@ public class UserDtoRequest {
     @NotEmpty
     @Pattern(
             regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-            message = "Password must have at least 8 characters, including uppercase, lowercase, number, and special character"
+            message = "Password"
     )
     private String password;
 
     private String firstName;
     private String lastName;
 
-    @Email
+    @Email(message = "Email")
     private String email;
 }

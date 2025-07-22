@@ -1,5 +1,6 @@
 package com.store.book.dao.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Getter
@@ -9,6 +10,7 @@ import lombok.*;
 @Builder
 public class AuthDtoRequest {
 
+    @NotBlank(message = "NotBlank")
     private String username;
     private String password;
 }

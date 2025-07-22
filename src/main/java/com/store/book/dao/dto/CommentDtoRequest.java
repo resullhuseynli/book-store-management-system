@@ -15,8 +15,8 @@ public class CommentDtoRequest {
 
     private Long bookId;
     private String description;
-    @Max(value = 5, message = "Rating have to be between 1-5")
-    @Min(value = 1, message = "Rating have to be between 1-5")
+    @Max(value = 5, message = "BetweenOneToFive")
+    @Min(value = 1, message = "BetweenOneToFive")
     private Integer rating;
 
 }

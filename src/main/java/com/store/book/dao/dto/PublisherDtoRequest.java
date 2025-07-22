@@ -10,6 +10,6 @@ import lombok.*;
 @Builder
 public class PublisherDtoRequest {
 
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 100, message = "Size")
     private String name;
 }
