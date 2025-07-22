@@ -12,7 +12,7 @@ public class LocalizationConfig {
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setDefaultEncoding("UTF-8");
-        messageSource.setBasename("classpath:messages");
+        messageSource.setBasename("classpath:messages_validations");
         return messageSource;
     }
 }

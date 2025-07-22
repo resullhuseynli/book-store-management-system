@@ -6,6 +6,8 @@ import com.store.book.dao.dto.UserDtoUpdate;
 import com.store.book.dao.entity.UserEntity;
 import com.store.book.security.CustomUserDetailsService;
 import com.store.book.security.JwtService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Locale;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,8 +51,20 @@ public class AuthController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Void> update(@Valid @RequestBody UserDtoUpdate update) {
+    public ResponseEntity<Void> update(
+            @Valid @RequestBody UserDtoUpdate update,
+
+            @Parameter(
+                    description = "Language preference (e.g., en, az)",
+                    name = "Accept-Language",
+                    in = ParameterIn.HEADER,
+                    example = "az"
+            )
+            @RequestHeader(name = "Accept-Language", required = false, defaultValue = "en") String language
+    ) {
+        Locale locale = Locale.forLanguageTag(language);
         customUserDetailsService.updateUser(update);
         return ResponseEntity.noContent().build();
     }
+
 }
