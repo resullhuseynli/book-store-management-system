@@ -2,6 +2,8 @@ package com.store.book.exception;
 
 import com.store.book.exception.exceptions.*;
 import com.store.book.exception.model.ErrorResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -9,18 +11,20 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.ResponseEntity.badRequest;
 
+@RequiredArgsConstructor
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private final MessageSource messageSource;
 
     @ExceptionHandler(EntityContainException.class)
     public ResponseEntity<ErrorResponse<String>> handleEntityContainException(EntityContainException entityContainException) {
@@ -43,9 +47,18 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse<Map<String, List<String>>>> handleValidationErrors(MethodArgumentNotValidException methodArgumentNotValidException) {
-        List<String> errors = methodArgumentNotValidException.getBindingResult().getFieldErrors()
-                .stream().map(FieldError::getDefaultMessage).toList();
+    public ResponseEntity<ErrorResponse<Map<String, List<String>>>> handleValidationErrors(MethodArgumentNotValidException methodArgumentNotValidException,
+                                                                                           @RequestHeader(name = "Accept-Language", required = false) Locale locale
+    ) {
+        List<String> errors = methodArgumentNotValidException.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .filter(Objects::nonNull)
+                .map(error -> {
+                    assert error.getDefaultMessage() != null;
+                    return messageSource.getMessage(error.getDefaultMessage(), null, locale);
+                })
+                .toList();
         return new ResponseEntity<>(new ErrorResponse<>(UUID.randomUUID(), getErrorsMap(errors)), HttpStatus.BAD_REQUEST);
     }
 

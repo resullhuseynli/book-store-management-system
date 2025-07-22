@@ -2,6 +2,10 @@ spring:
   application:
     name: book
 
+  messages:
+    basename: messages_validations
+    encoding: UTF-8
+
   datasource:
     url: jdbc:postgresql://localhost:5434/db_book_store
     username: user
