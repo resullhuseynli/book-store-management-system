@@ -53,7 +53,6 @@ public class AuthController {
     @PutMapping("/update")
     public ResponseEntity<Void> update(
             @Valid @RequestBody UserDtoUpdate update,
-
             @Parameter(
                     description = "Language preference (e.g., en, az)",
                     name = "Accept-Language",

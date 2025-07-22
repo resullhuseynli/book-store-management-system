@@ -3,9 +3,11 @@ package com.store.book.controller;
 import com.store.book.dao.dto.ItemDtoRequest;
 import com.store.book.dao.dto.ItemDtoResponse;
 import com.store.book.service.ItemService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,12 +15,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/items")
+@Validated
 public class ItemController {
 
     private final ItemService itemService;
 
     @PostMapping
-    public ResponseEntity<ItemDtoResponse> addItem(@RequestBody ItemDtoRequest request) {
+    public ResponseEntity<ItemDtoResponse> addItem(@Valid @RequestBody ItemDtoRequest request) {
         return ResponseEntity.ok(itemService.create(request));
     }
 

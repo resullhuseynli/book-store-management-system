@@ -3,6 +3,7 @@ package com.store.book.controller;
 import com.store.book.dao.dto.AuthorDtoRequest;
 import com.store.book.dao.entity.Author;
 import com.store.book.service.AuthorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,13 +19,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/author")
 @RequiredArgsConstructor
+@Validated
 public class AuthorController {
 
     private final AuthorService authorService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<Author> saveAuthor(@RequestBody AuthorDtoRequest request) {
+    public ResponseEntity<Author> saveAuthor(@Valid @RequestBody AuthorDtoRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authorService.create(request));
     }
 
@@ -52,7 +55,7 @@ public class AuthorController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<Author> updateAuthor(@RequestBody AuthorDtoRequest request, @PathVariable Long id) {
+    public ResponseEntity<Author> updateAuthor(@Valid @RequestBody AuthorDtoRequest request, @PathVariable Long id) {
         return ResponseEntity.ok().body(authorService.updateAuthor(id, request));
     }
 
