@@ -8,11 +8,14 @@ import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.AuthorMapper;
 import com.store.book.service.AuthorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -20,11 +23,14 @@ public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
+    private final MessageSource messageSource;
+    private final Locale locale = LocaleContextHolder.getLocale();
 
     @Override
     public Author getById(Long id) {
         return authorRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Author not found"));
+                .orElseThrow(() -> new NotFoundException(
+                        messageSource.getMessage("AuthorNotFound", null, locale)));
     }
 
     @Override
@@ -35,7 +41,8 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author create(AuthorDtoRequest request) {
         if (authorRepository.existsAuthorsByName(request.getName())) {
-            throw new EntityContainException("Author already exists");
+            throw new EntityContainException(
+                    messageSource.getMessage("AuthorContainsMessage",  null, locale));
         }
         return authorRepository.save(authorMapper.dtoToEntity(request));
     }

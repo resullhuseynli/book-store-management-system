@@ -12,12 +12,15 @@ import com.store.book.mapper.DiscountMapper;
 import com.store.book.service.DiscountService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +31,8 @@ public class DiscountServiceImpl implements DiscountService {
     private final BookRepository bookRepository;
     private final DiscountMapper discountMapper;
     private final BookServiceImpl bookService;
+    private final MessageSource messageSource;
+    private final Locale locale = LocaleContextHolder.getLocale();
 
     @Transactional
     @Override
@@ -94,7 +99,8 @@ public class DiscountServiceImpl implements DiscountService {
     public DiscountDtoResponse getById(Long id) {
         return discountRepository.findById(id)
                 .map(discountMapper::entityToDto)
-                .orElseThrow(() -> new NotFoundException("Discount not found"));
+                .orElseThrow(() -> new NotFoundException(
+                        messageSource.getMessage("DiscountNotFound", null, locale)));
     }
 
     @Override
@@ -108,7 +114,8 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public void deleteById(Long id) {
         Discount discount = discountRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Discount not found"));
+                .orElseThrow(() -> new NotFoundException(
+                        messageSource.getMessage("DiscountNotFound", null, locale)));
         discount.setActive(false);
         discount.getBooks().forEach(this::calculateNewPrice);
         discountRepository.save(discount);

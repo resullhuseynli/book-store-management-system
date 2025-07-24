@@ -22,8 +22,8 @@ import java.util.List;
 public class DiscountDtoRequest {
 
     @NotNull
-    @DecimalMin("0.01")
-    @DecimalMax("100.00")
+    @DecimalMin(value = "0.01", message = "CannotBeNegative")
+    @DecimalMax(value = "100.00", message = "CannotAboveHundred")
     @Digits(integer = 2, fraction = 2)
     @Schema(description = "Discount percentage", example = "15.75")
     private BigDecimal percentage;

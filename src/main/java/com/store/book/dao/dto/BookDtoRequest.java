@@ -22,17 +22,19 @@ public class BookDtoRequest {
     private String title;
     private Genre genre;
 
-    @NotNull(message = "Price must not be null")
-    @DecimalMin(value = "0.01", message = "Price must be greater than 0")
+    @NotNull(message = "NotNull")
+    @DecimalMin(value = "0.01", message = "CannotBeNegative")
     private BigDecimal price;
 
-    @Min(value = 0, message = "Amount cannot be negative")
+    @Min(value = 0, message = "CannotBeNegative")
     private Integer amount;
 
-    @Min(value = 0, message = "Page count cannot be negative")
+    @Min(value = 0, message = "CannotBeNegative")
     private Integer pageCount;
     private String description;
     private List<Language> languages;
+    @Min(value = 0, message = "CannotBeNegative")
     private Long authorId;
+    @Min(value = 0, message = "CannotBeNegative")
     private Long publisherId;
 }

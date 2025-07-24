@@ -10,11 +10,14 @@ import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.security.CustomUserDetailsService;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Locale;
 
 @Mapper(componentModel = "spring", uses = {BookRepository.class, CustomUserDetailsService.class})
 public abstract class CommentMapper {
@@ -25,6 +28,10 @@ public abstract class CommentMapper {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    @Autowired
+    private MessageSource messageSource;
+    private final Locale locale = LocaleContextHolder.getLocale();
+
     @Mappings({
             @Mapping(target = "book", ignore = true),
             @Mapping(target = "user", ignore = true)
@@ -34,9 +41,9 @@ public abstract class CommentMapper {
     @AfterMapping
     protected void afterDtoToEntity(CommentDtoRequest request, @MappingTarget Comment comment) {
         Book book = bookRepository.findById(request.getBookId())
-                .orElseThrow(() -> new NotFoundException("Book not found"));
+                .orElseThrow(() -> new NotFoundException(messageSource.getMessage("BookNotFound", null, locale)));
         comment.setBook(book);
-        if(book.getRating() == null) {
+        if (book.getRating() == null) {
             book.setRating(BigDecimal.valueOf(comment.getRating()));
         } else {
             BigDecimal length = BigDecimal.valueOf(book.getComments().size());

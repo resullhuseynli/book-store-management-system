@@ -13,10 +13,13 @@ import com.store.book.mapper.CartMapper;
 import com.store.book.security.CustomUserDetailsService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 
 @RequiredArgsConstructor
 @Service
@@ -27,11 +30,14 @@ public class CartService {
     private final UserEntityRepository userEntityRepository;
     private final CartMapper cartMapper;
     private final ItemService itemService;
+    private final MessageSource messageSource;
+    private final Locale locale = LocaleContextHolder.getLocale();
 
     public CartDtoResponse get() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity user = customUserDetailsService.loadUserByUsername(username);
-        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new NotFoundException("Cart not found"));
+        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new NotFoundException(
+                messageSource.getMessage("CartNotFound", null, locale)));
         return cartMapper.entityToDto(cart);
     }
 
@@ -39,14 +45,16 @@ public class CartService {
     public CartDtoResponse buy() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity user = customUserDetailsService.loadUserByUsername(username);
-        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new NotFoundException("Cart not found"));
+        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new NotFoundException(
+                messageSource.getMessage("CartNotFound", null, locale)));
         BigDecimal total = BigDecimal.ZERO;
         for (Item item : cart.getItem()) {
             itemService.buyItem(item);
             total = total.add((BigDecimal.valueOf(item.getQuantity()).multiply(item.getBook().getNewPrice())));
         }
         if (!(buyBooks(user, total))) {
-            throw new NotEnoughMoneyException("Insufficient Amount");
+            throw new NotEnoughMoneyException(
+                    messageSource.getMessage("NotEnoughMoneyErrorMessage", null, locale));
         }
         cart.setStatus(Status.BOUGHT);
         Cart newCart = new Cart();

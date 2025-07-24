@@ -10,23 +10,22 @@ import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Publisher;
 import com.store.book.dao.entity.UserEntity;
 import com.store.book.enums.Genre;
-import com.store.book.exception.exceptions.DataIsAlreadyAddedException;
+import com.store.book.exception.exceptions.EntityContainException;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.BookMapper;
 import com.store.book.security.CustomUserDetailsService;
 import com.store.book.service.BookService;
 import com.store.book.service.ViewTrackerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +39,8 @@ public class BookServiceImpl implements BookService {
     private final ViewTrackerService viewTrackerService;
     private final CustomUserDetailsService customUserDetailsService;
     private final UserEntityRepository userEntityRepository;
+    private final MessageSource messageSource;
+    private final Locale locale = LocaleContextHolder.getLocale();
 
     @Override
     public BookDtoResponse create(BookDtoRequest request) {
@@ -62,7 +63,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getBookWithDetailsById(Long id) {
         return bookRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Book with id: " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException(
+                        messageSource.getMessage("book.notFound", null, locale)));
     }
 
     @Override
@@ -116,7 +118,8 @@ public class BookServiceImpl implements BookService {
         }
         Book book = getBookWithDetailsById(bookId);
         if (bookList.contains(book)) {
-            throw new DataIsAlreadyAddedException("Book was already favoured");
+            throw new EntityContainException(
+                    messageSource.getMessage("BookContainsMessage", null, locale));
         }
         bookList.add(book);
         userEntityRepository.save(user);

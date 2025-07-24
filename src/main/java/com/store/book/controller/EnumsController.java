@@ -15,7 +15,7 @@ import java.util.List;
 public class EnumsController {
 
     @GetMapping("/all-genres")
-    public ResponseEntity<List<Genre>>  getAllGenres() {
+    public ResponseEntity<List<Genre>> getAllGenres() {
         return ResponseEntity.ok().body(Arrays.asList(Genre.values()));
     }
 

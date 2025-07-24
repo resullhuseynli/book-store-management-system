@@ -11,10 +11,10 @@ import lombok.*;
 @Builder
 public class UserDtoUpdate {
 
-    @NotBlank
+    @NotBlank(message = "NotBlank")
     private String firstName;
     @NotBlank
     private String lastName;
-    @Email
+    @Email(message = "Email")
     private String email;
 }

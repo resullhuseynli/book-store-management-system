@@ -16,10 +16,13 @@ import com.store.book.security.CustomUserDetailsService;
 import com.store.book.service.ItemService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +34,8 @@ public class ItemServiceImpl implements ItemService {
     private final CustomUserDetailsService customUserDetailsService;
     private final CartRepository cartRepository;
     private final BookRepository bookRepository;
+    private final MessageSource messageSource;
+    private final Locale locale = LocaleContextHolder.getLocale();
 
     @Override
     public ItemDtoResponse getById(Long id) {
@@ -39,7 +44,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public Item getItemWithDetails(Long id) {
-        return itemRepository.findById(id).orElseThrow(() -> new NotFoundException("Item not found"));
+        return itemRepository.findById(id).orElseThrow(() -> new NotFoundException(
+                messageSource.getMessage("ItemNotFound", null, locale)));
     }
 
     @Override
@@ -53,7 +59,8 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemDtoResponse> getAllItemsByCart() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity user = customUserDetailsService.loadUserByUsername(username);
-        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new NotFoundException("Cart not found"));
+        Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new NotFoundException(
+                messageSource.getMessage("CartNotFound", null, locale)));
         return itemRepository.findAll().stream()
                 .filter(cartBook -> cartBook.getCart().equals(cart))
                 .map(itemMapper::entityToDto)
@@ -65,8 +72,9 @@ public class ItemServiceImpl implements ItemService {
     public void buyItem(Item item) {
         Book book = item.getBook();
         book.setAmount(book.getAmount() - item.getQuantity());
-        if(book.getAmount() <= 0) {
-            throw new NotEnoughBookException("We have not enough books!");
+        if (book.getAmount() <= 0) {
+            throw new NotEnoughBookException(
+                    messageSource.getMessage("NotEnoughBookErrorMessage", null, locale));
         }
         bookRepository.save(book);
         itemMapper.entityToDto(item);

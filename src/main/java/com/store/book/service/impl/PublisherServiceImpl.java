@@ -8,11 +8,14 @@ import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.PublisherMapper;
 import com.store.book.service.PublisherService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -20,11 +23,14 @@ public class PublisherServiceImpl implements PublisherService {
 
     private final PublisherRepository publisherRepository;
     private final PublisherMapper publisherMapper;
+    private final MessageSource messageSource;
+    private final Locale locale = LocaleContextHolder.getLocale();
 
     @Override
     public Publisher create(PublisherDtoRequest request) {
         if (publisherRepository.existsPublisherByName(request.getName())) {
-            throw new EntityContainException("Publisher already exists");
+            throw new EntityContainException(
+                    messageSource.getMessage("PublisherContainsMessage", null, locale));
         }
         return publisherRepository.save(publisherMapper.dtoToEntity(request));
     }
@@ -32,7 +38,8 @@ public class PublisherServiceImpl implements PublisherService {
     @Override
     public Publisher getById(Long id) {
         return publisherRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Publisher with id " + id + " not found!"));
+                .orElseThrow(() -> new NotFoundException(
+                        messageSource.getMessage("PublisherNotFound", null, locale)));
     }
 
     @Override

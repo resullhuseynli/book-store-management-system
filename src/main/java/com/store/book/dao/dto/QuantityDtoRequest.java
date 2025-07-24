@@ -13,6 +13,6 @@ import lombok.Setter;
 public class QuantityDtoRequest {
 
     private Long bookId;
-    @Min(value = 1, message = "Quantity cannot below 1")
+    @Min(value = 1, message = "CannotBeNegative")
     private int quantity;
 }
