@@ -40,7 +40,6 @@ public class BookServiceImpl implements BookService {
     private final CustomUserDetailsService customUserDetailsService;
     private final UserEntityRepository userEntityRepository;
     private final MessageSource messageSource;
-    private final Locale locale = LocaleContextHolder.getLocale();
 
     @Override
     public BookDtoResponse create(BookDtoRequest request) {
@@ -62,6 +61,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getBookWithDetailsById(Long id) {
+        final Locale locale = LocaleContextHolder.getLocale();
         return bookRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(
                         messageSource.getMessage("book.notFound", null, locale)));
@@ -110,6 +110,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDtoResponse> addFavoriteBook(Long bookId) {
+        final Locale locale = LocaleContextHolder.getLocale();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity user = customUserDetailsService.loadUserByUsername(username);
         List<Book> bookList = user.getFavoriteBooks();

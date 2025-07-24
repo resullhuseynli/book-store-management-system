@@ -32,7 +32,6 @@ public class DiscountServiceImpl implements DiscountService {
     private final DiscountMapper discountMapper;
     private final BookServiceImpl bookService;
     private final MessageSource messageSource;
-    private final Locale locale = LocaleContextHolder.getLocale();
 
     @Transactional
     @Override
@@ -97,6 +96,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public DiscountDtoResponse getById(Long id) {
+        final Locale locale = LocaleContextHolder.getLocale();
         return discountRepository.findById(id)
                 .map(discountMapper::entityToDto)
                 .orElseThrow(() -> new NotFoundException(
@@ -113,6 +113,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public void deleteById(Long id) {
+        final Locale locale = LocaleContextHolder.getLocale();
         Discount discount = discountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(
                         messageSource.getMessage("DiscountNotFound", null, locale)));

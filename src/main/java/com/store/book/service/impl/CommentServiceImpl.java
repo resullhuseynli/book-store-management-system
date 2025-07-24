@@ -29,10 +29,10 @@ public class CommentServiceImpl implements CommentService {
     private final BookService bookService;
     private final BookRepository bookRepository;
     private final MessageSource messageSource;
-    private final Locale locale = LocaleContextHolder.getLocale();
 
     @Override
     public CommentDtoResponse getById(Long id) {
+        final Locale locale = LocaleContextHolder.getLocale();
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(
                         messageSource.getMessage("CommentNotFound", null, locale)));
@@ -41,6 +41,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment getByIdWithDetails(Long id) {
+        final Locale locale = LocaleContextHolder.getLocale();
         return commentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(
                         messageSource.getMessage("CommentNotFound", null, locale)));

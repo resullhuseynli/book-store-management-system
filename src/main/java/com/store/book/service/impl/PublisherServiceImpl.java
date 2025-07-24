@@ -24,10 +24,10 @@ public class PublisherServiceImpl implements PublisherService {
     private final PublisherRepository publisherRepository;
     private final PublisherMapper publisherMapper;
     private final MessageSource messageSource;
-    private final Locale locale = LocaleContextHolder.getLocale();
 
     @Override
     public Publisher create(PublisherDtoRequest request) {
+        final Locale locale = LocaleContextHolder.getLocale();
         if (publisherRepository.existsPublisherByName(request.getName())) {
             throw new EntityContainException(
                     messageSource.getMessage("PublisherContainsMessage", null, locale));
@@ -37,6 +37,7 @@ public class PublisherServiceImpl implements PublisherService {
 
     @Override
     public Publisher getById(Long id) {
+        final Locale locale = LocaleContextHolder.getLocale();
         return publisherRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(
                         messageSource.getMessage("PublisherNotFound", null, locale)));

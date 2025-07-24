@@ -29,18 +29,20 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserEntityRepository userRepository;
     private final CartRepository cartRepository;
     private final MessageSource messageSource;
-    private final Locale locale = LocaleContextHolder.getLocale();
 
     @Override
     public UserEntity loadUserByUsername(String username) throws UsernameNotFoundException {
+        final Locale locale = LocaleContextHolder.getLocale();
         return userRepository.findByUserName(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        messageSource.getMessage("NotFoundErrorMessage", null, locale)));
     }
 
     public void registerNewUser(AuthDtoRequest request) {
+        final Locale locale = LocaleContextHolder.getLocale();
         if (userRepository.findByUserName(request.getUsername()).isPresent()) {
             throw new UserAlreadyExistException(
-                    messageSource.getMessage("UserAlreadyExist", null, locale));
+                    messageSource.getMessage("UserAlreadyExistsErrorMessage", null, locale));
         }
         UserEntity userEntity = new UserEntity();
         userEntity.setPassword(passwordEncoder().encode(request.getPassword()));

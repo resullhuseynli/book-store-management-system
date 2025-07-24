@@ -94,7 +94,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ErrorResponse<String>> handleUsernameNotFoundException(UsernameNotFoundException usernameNotFoundException) {
-        return ResponseEntity.badRequest().body(ErrorResponse.<String>builder()
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.<String>builder()
                 .errorCode(USERNAME_NOT_FOUND_ERROR_CODE)
                 .errorMessage(getLocalizedMessage(USERNAME_NOT_FOUND_ERROR_MESSAGE))
                 .message(usernameNotFoundException.getMessage())
@@ -103,7 +103,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ImageIsNotAvailableException.class)
     public ResponseEntity<ErrorResponse<String>> handleImageIsNotAvailableException(ImageIsNotAvailableException imageIsNotAvailableException) {
-        return ResponseEntity.badRequest().body(ErrorResponse.<String>builder()
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.<String>builder()
                 .errorCode(IMAGE_IS_NOT_AVAILABLE_ERROR_CODE)
                 .errorMessage(getLocalizedMessage(IMAGE_IS_NOT_AVAILABLE_ERROR_MESSAGE))
                 .message(imageIsNotAvailableException.getMessage())
