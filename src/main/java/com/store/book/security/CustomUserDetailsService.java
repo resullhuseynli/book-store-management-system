@@ -10,6 +10,8 @@ import com.store.book.enums.Role;
 import com.store.book.enums.Status;
 import com.store.book.exception.exceptions.UserAlreadyExistException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserEntityRepository userRepository;
     private final CartRepository cartRepository;
+    private final MessageSource messageSource;
+    private final Locale locale = LocaleContextHolder.getLocale();
 
     @Override
     public UserEntity loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -34,7 +39,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public void registerNewUser(AuthDtoRequest request) {
         if (userRepository.findByUserName(request.getUsername()).isPresent()) {
-            throw new UserAlreadyExistException("User exists");
+            throw new UserAlreadyExistException(
+                    messageSource.getMessage("UserAlreadyExist", null, locale));
         }
         UserEntity userEntity = new UserEntity();
         userEntity.setPassword(passwordEncoder().encode(request.getPassword()));

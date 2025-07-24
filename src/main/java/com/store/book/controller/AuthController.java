@@ -51,17 +51,7 @@ public class AuthController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Void> update(
-            @Valid @RequestBody UserDtoUpdate update,
-            @Parameter(
-                    description = "Language preference (e.g., en, az)",
-                    name = "Accept-Language",
-                    in = ParameterIn.HEADER,
-                    example = "az"
-            )
-            @RequestHeader(name = "Accept-Language", required = false, defaultValue = "en") String language
-    ) {
-        Locale locale = Locale.forLanguageTag(language);
+    public ResponseEntity<Void> update(@Valid @RequestBody UserDtoUpdate update) {
         customUserDetailsService.updateUser(update);
         return ResponseEntity.noContent().build();
     }

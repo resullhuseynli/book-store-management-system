@@ -11,11 +11,14 @@ import com.store.book.mapper.CommentMapper;
 import com.store.book.service.BookService;
 import com.store.book.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -25,18 +28,22 @@ public class CommentServiceImpl implements CommentService {
     private final CommentMapper commentMapper;
     private final BookService bookService;
     private final BookRepository bookRepository;
+    private final MessageSource messageSource;
+    private final Locale locale = LocaleContextHolder.getLocale();
 
     @Override
     public CommentDtoResponse getById(Long id) {
         Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Comment not found"));
+                .orElseThrow(() -> new NotFoundException(
+                        messageSource.getMessage("CommentNotFound", null, locale)));
         return commentMapper.entityToDto(comment);
     }
 
     @Override
     public Comment getByIdWithDetails(Long id) {
         return commentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Comment not found"));
+                .orElseThrow(() -> new NotFoundException(
+                        messageSource.getMessage("CommentNotFound", null, locale)));
     }
 
     @Override
