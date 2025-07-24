@@ -35,7 +35,6 @@ public class ItemServiceImpl implements ItemService {
     private final CartRepository cartRepository;
     private final BookRepository bookRepository;
     private final MessageSource messageSource;
-    private final Locale locale = LocaleContextHolder.getLocale();
 
     @Override
     public ItemDtoResponse getById(Long id) {
@@ -44,6 +43,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public Item getItemWithDetails(Long id) {
+        final Locale locale = LocaleContextHolder.getLocale();
         return itemRepository.findById(id).orElseThrow(() -> new NotFoundException(
                 messageSource.getMessage("ItemNotFound", null, locale)));
     }
@@ -57,6 +57,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDtoResponse> getAllItemsByCart() {
+        final Locale locale = LocaleContextHolder.getLocale();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity user = customUserDetailsService.loadUserByUsername(username);
         Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new NotFoundException(
@@ -70,6 +71,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public void buyItem(Item item) {
+        final Locale locale = LocaleContextHolder.getLocale();
         Book book = item.getBook();
         book.setAmount(book.getAmount() - item.getQuantity());
         if (book.getAmount() <= 0) {

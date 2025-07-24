@@ -27,7 +27,6 @@ public class CoverImageService {
     private final BookRepository bookRepository;
     private final BookServiceImpl bookService;
     private final MessageSource messageSource;
-    private final Locale locale = LocaleContextHolder.getLocale();
 
     public CoverImageService(BookRepository bookRepository, BookServiceImpl bookService, MessageSource messageSource) throws IOException {
         this.bookService = bookService;
@@ -49,6 +48,7 @@ public class CoverImageService {
     }
 
     public ResponseEntity<byte[]> getCoverImage(Long bookId) throws IOException {
+        final Locale locale = LocaleContextHolder.getLocale();
         Book book = bookService.getBookWithDetailsById(bookId);
         if (book.getCoverImageUrl() == null) {
             throw new ImageIsNotAvailableException(

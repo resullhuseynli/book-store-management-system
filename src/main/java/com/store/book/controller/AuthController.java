@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,15 +31,18 @@ public class AuthController {
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtService jwtService;
     private final CustomUserDetailsService userDetailsService;
+    private final MessageSource messageSource;
 
     @PostMapping("/login")
     public ResponseEntity<AuthDtoResponse> login(@Valid @RequestBody AuthDtoRequest request) {
+        Locale locale = LocaleContextHolder.getLocale();
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
             );
         } catch (BadCredentialsException e) {
-            throw new BadCredentialsException("Invalid username or password");
+            throw new BadCredentialsException(
+                    messageSource.getMessage("BadCredentialsMessage", null, locale));
         }
         UserEntity user = userDetailsService.loadUserByUsername(request.getUsername());
         String jwt = jwtService.generateToken(user);

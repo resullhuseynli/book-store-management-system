@@ -43,6 +43,7 @@ public class CartService {
 
     @Transactional  //TODO Create Buying Service
     public CartDtoResponse buy() {
+        final Locale locale = LocaleContextHolder.getLocale();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity user = customUserDetailsService.loadUserByUsername(username);
         Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new NotFoundException(

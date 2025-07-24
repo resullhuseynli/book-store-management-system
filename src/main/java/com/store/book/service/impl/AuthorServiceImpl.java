@@ -24,10 +24,10 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
     private final MessageSource messageSource;
-    private final Locale locale = LocaleContextHolder.getLocale();
 
     @Override
     public Author getById(Long id) {
+        final Locale locale = LocaleContextHolder.getLocale();
         return authorRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(
                         messageSource.getMessage("AuthorNotFound", null, locale)));
@@ -40,6 +40,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author create(AuthorDtoRequest request) {
+        final Locale locale = LocaleContextHolder.getLocale();
         if (authorRepository.existsAuthorsByName(request.getName())) {
             throw new EntityContainException(
                     messageSource.getMessage("AuthorContainsMessage",  null, locale));
