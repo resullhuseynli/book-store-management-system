@@ -15,7 +15,13 @@ public class Init {
 
     @EventListener(ApplicationReadyEvent.class)
     @Transactional
-    public void onApplicationReady() {
+    public void checkExpiredDiscounts() {
+        discountService.checkExpiredDiscounts();
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    @Transactional
+    public void checkActiveDiscounts() {
         discountService.checkActiveDiscounts();
     }
 }
