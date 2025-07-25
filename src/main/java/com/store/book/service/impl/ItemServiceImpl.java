@@ -52,6 +52,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDtoResponse> getAll() {
         return itemRepository.findAll().stream()
+                .filter(i -> i.getStatus() == Status.ACTIVE)
                 .map(itemMapper::entityToDto)
                 .collect(Collectors.toList());
     }
@@ -65,6 +66,7 @@ public class ItemServiceImpl implements ItemService {
                 messageSource.getMessage("CartNotFound", null, locale)));
         return itemRepository.findAll().stream()
                 .filter(cartBook -> cartBook.getCart().equals(cart))
+                .filter(i -> i.getStatus() == Status.ACTIVE)
                 .map(itemMapper::entityToDto)
                 .toList();
     }

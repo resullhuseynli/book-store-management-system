@@ -71,6 +71,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookDtoResponse> getBooksByGenre(Genre genre) {
         return bookRepository.getBooksByGenre(genre).stream()
+                .filter(b -> b.getStatus().equals(Status.ACTIVE))
                 .map(bookMapper::entityToDto)
                 .collect(Collectors.toList());
     }
@@ -86,12 +87,15 @@ public class BookServiceImpl implements BookService {
     public List<BookDtoResponse> getBooksByAuthorId(Long authorId) {
         Author author = authorService.getById(authorId);
         return bookRepository.getBooksByAuthor(author).stream()
-                .map(bookMapper::entityToDto).collect(Collectors.toList());
+                .filter(b -> b.getStatus().equals(Status.ACTIVE))
+                .map(bookMapper::entityToDto)
+                .toList();
     }
 
     @Override
     public List<BookDtoResponse> getAll() {
         return bookRepository.findAll().stream()
+                .filter(b -> b.getStatus().equals(Status.ACTIVE))
                 .map(bookMapper::entityToDto)
                 .collect(Collectors.toList());
     }
@@ -140,8 +144,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public Page<BookDtoResponse> getAllBooks(Pageable pageable) {
         Page<Book> bookPage = bookRepository.findAll(pageable);
-        List<BookDtoResponse> response = bookMapper.entityToDtoList(bookPage.getContent());
-        return new PageImpl<>(response);
+        List<Book> bookList = bookPage.getContent().stream()
+                .filter(b -> b.getStatus().equals(Status.ACTIVE))
+                .toList();
+        List<BookDtoResponse> response = bookMapper.entityToDtoList(bookList);
+        return new PageImpl<>(response, pageable, response.size());
     }
 
     @Override

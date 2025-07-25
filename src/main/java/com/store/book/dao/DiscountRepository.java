@@ -18,6 +18,6 @@ public interface DiscountRepository extends CrudRepository<Discount,Long> {
     @Query("SELECT d FROM Discount d LEFT JOIN FETCH d.books WHERE d.startDate < :now AND d.endDate > :now AND d.isActive = false AND d.status = 'ACTIVE'")
     List<Discount> findActiveDiscounts(@Param("now") LocalDateTime now);
 
-    @Query("SELECT d FROM Discount d WHERE d.isActive = true")
+    @Query("SELECT d FROM Discount d WHERE d.isActive = true AND d.status != 'DELETED'")
     List<Discount> findAllByActiveTrue();
 }

@@ -118,6 +118,7 @@ public class DiscountServiceImpl implements DiscountService {
     public List<DiscountDtoResponse> getAll() {
         List<Discount> discounts = (List<Discount>) discountRepository.findAll();
         return discounts.stream()
+                .filter(d -> d.getStatus().equals(Status.ACTIVE))
                 .map(discountMapper::entityToDto)
                 .toList();
     }

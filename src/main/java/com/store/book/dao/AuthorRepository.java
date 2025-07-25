@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
-    @Query("SELECT a FROM Author a WHERE LOWER(a.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+    @Query("SELECT a FROM Author a WHERE LOWER(a.name) LIKE LOWER(CONCAT('%', :name, '%')) AND a.status = 'ACTIVE'")
     List<Author> getAuthorsByName(String name);
 
     boolean existsAuthorsByName(String username);

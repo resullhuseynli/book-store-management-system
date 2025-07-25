@@ -51,7 +51,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentDtoResponse> getAll() {
         List<Comment> comments = commentRepository.findAll();
-        return commentMapper.entityToDto(comments);
+        return comments.stream()
+                .filter(c -> c.getStatus().equals(Status.ACTIVE))
+                .map(commentMapper::entityToDto)
+                .toList();
     }
 
     @Override
