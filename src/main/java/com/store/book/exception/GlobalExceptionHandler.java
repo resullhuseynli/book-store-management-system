@@ -1,5 +1,7 @@
 package com.store.book.exception;
 
+import com.store.book.exception.exception_model.ErrorCode;
+import com.store.book.exception.exception_model.ErrorMessage;
 import com.store.book.exception.exceptions.*;
 import com.store.book.exception.model.ErrorResponse;
 import org.springframework.context.MessageSource;
@@ -14,8 +16,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeoutException;
 
 import static com.store.book.exception.exception_model.ErrorCode.*;
+import static com.store.book.exception.exception_model.ErrorCode.TIMEOUT_EXCEPTION_ERROR_CODE;
 import static com.store.book.exception.exception_model.ErrorMessage.*;
 import static org.springframework.http.ResponseEntity.badRequest;
 
@@ -107,6 +111,15 @@ public class GlobalExceptionHandler {
                 .errorCode(IMAGE_IS_NOT_AVAILABLE_ERROR_CODE)
                 .errorMessage(getLocalizedMessage(IMAGE_IS_NOT_AVAILABLE_ERROR_MESSAGE))
                 .message(imageIsNotAvailableException.getMessage())
+                .build());
+    }
+
+    @ExceptionHandler(TimeoutException.class)
+    public ResponseEntity<ErrorResponse<String>> handleImageIsNotAvailableException(TimeoutException timeoutException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.<String>builder()
+                .errorCode(TIMEOUT_EXCEPTION_ERROR_CODE)
+                .errorMessage(getLocalizedMessage(TIMEOUT_EXCEPTION_ERROR_MESSAGE))
+                .message(timeoutException.getMessage())
                 .build());
     }
 
