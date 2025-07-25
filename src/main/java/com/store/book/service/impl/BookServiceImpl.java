@@ -10,6 +10,7 @@ import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Publisher;
 import com.store.book.dao.entity.UserEntity;
 import com.store.book.enums.Genre;
+import com.store.book.enums.Status;
 import com.store.book.exception.exceptions.EntityContainException;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.BookMapper;
@@ -64,7 +65,7 @@ public class BookServiceImpl implements BookService {
         final Locale locale = LocaleContextHolder.getLocale();
         return bookRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(
-                        messageSource.getMessage("book.notFound", null, locale)));
+                        messageSource.getMessage("BookNotFound", null, locale)));
     }
 
     @Override
@@ -77,7 +78,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteById(Long id) {
         Book book = getBookWithDetailsById(id);
-        bookRepository.delete(book);
+        book.setStatus(Status.DELETED);
+        bookRepository.save(book);
     }
 
     @Override

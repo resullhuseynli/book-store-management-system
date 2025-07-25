@@ -9,6 +9,7 @@ import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Cart;
 import com.store.book.dao.entity.Item;
 import com.store.book.dao.entity.UserEntity;
+import com.store.book.enums.Status;
 import com.store.book.exception.exceptions.NotEnoughBookException;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.ItemMapper;
@@ -85,7 +86,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void deleteById(Long id) {
         Item item = getItemWithDetails(id);
-        itemRepository.delete(item);
+        item.setStatus(Status.DELETED);
+        itemRepository.save(item);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.store.book.dao.dto.CommentDtoRequest;
 import com.store.book.dao.dto.CommentDtoResponse;
 import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Comment;
+import com.store.book.enums.Status;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.CommentMapper;
 import com.store.book.service.BookService;
@@ -56,7 +57,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteById(Long id) {
         Comment comment = getByIdWithDetails(id);
-        commentRepository.delete(comment);
+        comment.setStatus(Status.DELETED);
+        commentRepository.save(comment);
         Book book = bookService.getBookWithDetailsById(comment.getBook().getId());
         BigDecimal size = BigDecimal.valueOf(book.getComments().size());
         BigDecimal newRating = book.getRating()

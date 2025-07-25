@@ -3,6 +3,7 @@ package com.store.book.service.impl;
 import com.store.book.dao.PublisherRepository;
 import com.store.book.dao.dto.PublisherDtoRequest;
 import com.store.book.dao.entity.Publisher;
+import com.store.book.enums.Status;
 import com.store.book.exception.exceptions.EntityContainException;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.PublisherMapper;
@@ -63,6 +64,7 @@ public class PublisherServiceImpl implements PublisherService {
     @Override
     public void deleteById(Long id) {
         Publisher publisher = getById(id);
-        publisherRepository.delete(publisher);
+        publisher.setStatus(Status.DELETED);
+        publisherRepository.save(publisher);
     }
 }

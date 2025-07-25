@@ -3,6 +3,7 @@ package com.store.book.service.impl;
 import com.store.book.dao.AuthorRepository;
 import com.store.book.dao.dto.AuthorDtoRequest;
 import com.store.book.dao.entity.Author;
+import com.store.book.enums.Status;
 import com.store.book.exception.exceptions.EntityContainException;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.AuthorMapper;
@@ -59,7 +60,8 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void deleteById(Long id) {
         Author author = getById(id);
-        authorRepository.delete(author);
+        author.setStatus(Status.DELETED);
+        authorRepository.save(author);
     }
 
     @Override
