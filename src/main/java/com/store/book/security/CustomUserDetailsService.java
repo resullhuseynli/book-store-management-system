@@ -83,7 +83,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         CompletableFuture<String> future = new CompletableFuture<>();
         responseMap.put(requestId, future);
-
         kafkaTemplate.send("payment-request", message);
 
         try {
