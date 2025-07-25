@@ -11,5 +11,5 @@ public final class ErrorMessage {
     public static final String IMAGE_IS_NOT_AVAILABLE_ERROR_MESSAGE = "ImageIsNotAvailableErrorMessage";
     public static final String BAD_CREDENTIALS_ERROR_MESSAGE = "BadCredentialsErrorMessage";
     public static final String USER_ALREADY_EXISTS_ERROR_MESSAGE= "UserAlreadyExistsErrorMessage";
-
+    public static final String TIMEOUT_EXCEPTION_ERROR_MESSAGE = "TimeoutExceptionErrorMessage";
 }

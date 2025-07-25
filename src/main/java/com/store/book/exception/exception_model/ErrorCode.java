@@ -11,4 +11,5 @@ public final class ErrorCode {
     public static final String IMAGE_IS_NOT_AVAILABLE_ERROR_CODE = "IMAGE_IS_NOT_AVAILABLE_ERROR";
     public static final String BAD_CREDENTIALS_ERROR_CODE = "BAD_CREDENTIALS_ERROR";
     public static final String USER_ALREADY_EXISTS_ERROR_CODE = "USER_ALREADY_EXISTS_ERROR";
+    public static final String TIMEOUT_EXCEPTION_ERROR_CODE = "TIMEOUT_EXCEPTION_ERROR";
 }

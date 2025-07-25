@@ -77,6 +77,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public String sendPaymentRequest(Long userId, BigDecimal amount) throws Exception {
+        final Locale locale = LocaleContextHolder.getLocale();
         String requestId = UUID.randomUUID().toString();
         String message = userId + ":" + requestId + ":" + amount;
 
@@ -94,8 +95,9 @@ public class CustomUserDetailsService implements UserDetailsService {
             } else {
                 return "Payment Failed";
             }
-        } catch (TimeoutException e) {
-            throw new RuntimeException("Timed out waiting for payment response"); //TODO message source
+        } catch (TimeoutException timeoutException) {
+            throw new TimeoutException(
+                    messageSource.getMessage("TimeOutMessage", null, locale));
         } finally {
             responseMap.remove(requestId);
         }
