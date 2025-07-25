@@ -6,8 +6,6 @@ import com.store.book.dao.dto.UserDtoUpdate;
 import com.store.book.dao.entity.UserEntity;
 import com.store.book.security.CustomUserDetailsService;
 import com.store.book.security.JwtService;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -19,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Locale;
 
 @RestController
@@ -59,6 +58,11 @@ public class AuthController {
     public ResponseEntity<Void> update(@Valid @RequestBody UserDtoUpdate update) {
         customUserDetailsService.updateUser(update);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/money/{id}")
+    public ResponseEntity<String> getMoney(@PathVariable Long id, @RequestBody BigDecimal amount) throws Exception {
+        return ResponseEntity.ok().body(customUserDetailsService.sendPaymentRequest(id, amount));
     }
 
 }

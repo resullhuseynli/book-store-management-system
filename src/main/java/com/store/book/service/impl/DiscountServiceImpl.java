@@ -7,6 +7,7 @@ import com.store.book.dao.dto.DiscountDtoRequestAll;
 import com.store.book.dao.dto.DiscountDtoResponse;
 import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Discount;
+import com.store.book.enums.Status;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.DiscountMapper;
 import com.store.book.service.DiscountService;
@@ -62,13 +63,23 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Transactional
-    public void checkActiveDiscounts() {
+    public void checkExpiredDiscounts() {
         List<Discount> expiredDiscounts = discountRepository.findExpiredDiscounts(LocalDateTime.now());
         for (Discount discount : expiredDiscounts) {
             discount.setActive(false);
             discount.getBooks().forEach(this::calculateNewPrice);
         }
         discountRepository.saveAll(expiredDiscounts);
+    }
+
+    @Transactional
+    public void checkActiveDiscounts() {
+        List<Discount> activeDiscounts = discountRepository.findActiveDiscounts(LocalDateTime.now());
+        for (Discount discount : activeDiscounts) {
+            discount.setActive(true);
+            discount.getBooks().forEach(this::calculateNewPrice);
+        }
+        discountRepository.saveAll(activeDiscounts);
     }
 
     private void calculateNewPrice(Book book) {
@@ -107,6 +118,7 @@ public class DiscountServiceImpl implements DiscountService {
     public List<DiscountDtoResponse> getAll() {
         List<Discount> discounts = (List<Discount>) discountRepository.findAll();
         return discounts.stream()
+                .filter(d -> d.getStatus().equals(Status.ACTIVE))
                 .map(discountMapper::entityToDto)
                 .toList();
     }
@@ -119,6 +131,7 @@ public class DiscountServiceImpl implements DiscountService {
                         messageSource.getMessage("DiscountNotFound", null, locale)));
         discount.setActive(false);
         discount.getBooks().forEach(this::calculateNewPrice);
+        discount.setStatus(Status.DELETED);
         discountRepository.save(discount);
     }
 }

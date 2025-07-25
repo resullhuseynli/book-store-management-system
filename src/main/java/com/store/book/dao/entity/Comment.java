@@ -1,5 +1,6 @@
 package com.store.book.dao.entity;
 
+import com.store.book.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +26,10 @@ public class Comment {
 
     @Column(name = "comment_rating")
     private Integer rating;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "comment_status")
+    private Status status;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")

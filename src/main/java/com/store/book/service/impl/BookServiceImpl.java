@@ -10,6 +10,7 @@ import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Publisher;
 import com.store.book.dao.entity.UserEntity;
 import com.store.book.enums.Genre;
+import com.store.book.enums.Status;
 import com.store.book.exception.exceptions.EntityContainException;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.BookMapper;
@@ -64,12 +65,13 @@ public class BookServiceImpl implements BookService {
         final Locale locale = LocaleContextHolder.getLocale();
         return bookRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(
-                        messageSource.getMessage("book.notFound", null, locale)));
+                        messageSource.getMessage("BookNotFound", null, locale)));
     }
 
     @Override
     public List<BookDtoResponse> getBooksByGenre(Genre genre) {
         return bookRepository.getBooksByGenre(genre).stream()
+                .filter(b -> b.getStatus().equals(Status.ACTIVE))
                 .map(bookMapper::entityToDto)
                 .collect(Collectors.toList());
     }
@@ -77,19 +79,23 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteById(Long id) {
         Book book = getBookWithDetailsById(id);
-        bookRepository.delete(book);
+        book.setStatus(Status.DELETED);
+        bookRepository.save(book);
     }
 
     @Override
     public List<BookDtoResponse> getBooksByAuthorId(Long authorId) {
         Author author = authorService.getById(authorId);
         return bookRepository.getBooksByAuthor(author).stream()
-                .map(bookMapper::entityToDto).collect(Collectors.toList());
+                .filter(b -> b.getStatus().equals(Status.ACTIVE))
+                .map(bookMapper::entityToDto)
+                .toList();
     }
 
     @Override
     public List<BookDtoResponse> getAll() {
         return bookRepository.findAll().stream()
+                .filter(b -> b.getStatus().equals(Status.ACTIVE))
                 .map(bookMapper::entityToDto)
                 .collect(Collectors.toList());
     }
@@ -138,8 +144,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public Page<BookDtoResponse> getAllBooks(Pageable pageable) {
         Page<Book> bookPage = bookRepository.findAll(pageable);
-        List<BookDtoResponse> response = bookMapper.entityToDtoList(bookPage.getContent());
-        return new PageImpl<>(response);
+        List<Book> bookList = bookPage.getContent().stream()
+                .filter(b -> b.getStatus().equals(Status.ACTIVE))
+                .toList();
+        List<BookDtoResponse> response = bookMapper.entityToDtoList(bookList);
+        return new PageImpl<>(response, pageable, response.size());
     }
 
     @Override

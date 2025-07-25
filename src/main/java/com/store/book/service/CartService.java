@@ -41,7 +41,7 @@ public class CartService {
         return cartMapper.entityToDto(cart);
     }
 
-    @Transactional  //TODO Create Buying Service
+    @Transactional
     public CartDtoResponse buy() {
         final Locale locale = LocaleContextHolder.getLocale();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

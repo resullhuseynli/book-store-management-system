@@ -3,6 +3,7 @@ package com.store.book.service.impl;
 import com.store.book.dao.AuthorRepository;
 import com.store.book.dao.dto.AuthorDtoRequest;
 import com.store.book.dao.entity.Author;
+import com.store.book.enums.Status;
 import com.store.book.exception.exceptions.EntityContainException;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.AuthorMapper;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +37,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<Author> getAll() {
-        return authorRepository.findAll();
+        return authorRepository.findAll().stream()
+                .filter(a -> a.getStatus().equals(Status.ACTIVE))
+                .toList();
     }
 
     @Override
@@ -43,7 +47,7 @@ public class AuthorServiceImpl implements AuthorService {
         final Locale locale = LocaleContextHolder.getLocale();
         if (authorRepository.existsAuthorsByName(request.getName())) {
             throw new EntityContainException(
-                    messageSource.getMessage("AuthorContainsMessage",  null, locale));
+                    messageSource.getMessage("AuthorContainsMessage", null, locale));
         }
         return authorRepository.save(authorMapper.dtoToEntity(request));
     }
@@ -59,7 +63,8 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void deleteById(Long id) {
         Author author = getById(id);
-        authorRepository.delete(author);
+        author.setStatus(Status.DELETED);
+        authorRepository.save(author);
     }
 
     @Override
@@ -69,6 +74,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Page<Author> getAllAuthors(Pageable pageable) {
-        return authorRepository.findAll(pageable);
+        List<Author> authorList = authorRepository.findAll(pageable).getContent().stream()
+                .filter(a -> a.getStatus().equals(Status.ACTIVE))
+                .toList();
+        return new PageImpl<>(authorList, pageable, authorList.size());
     }
 }

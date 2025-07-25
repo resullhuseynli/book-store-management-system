@@ -9,6 +9,7 @@ import com.store.book.dao.entity.Book;
 import com.store.book.dao.entity.Cart;
 import com.store.book.dao.entity.Item;
 import com.store.book.dao.entity.UserEntity;
+import com.store.book.enums.Status;
 import com.store.book.exception.exceptions.NotEnoughBookException;
 import com.store.book.exception.exceptions.NotFoundException;
 import com.store.book.mapper.ItemMapper;
@@ -51,6 +52,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDtoResponse> getAll() {
         return itemRepository.findAll().stream()
+                .filter(i -> i.getStatus() == Status.ACTIVE)
                 .map(itemMapper::entityToDto)
                 .collect(Collectors.toList());
     }
@@ -64,6 +66,7 @@ public class ItemServiceImpl implements ItemService {
                 messageSource.getMessage("CartNotFound", null, locale)));
         return itemRepository.findAll().stream()
                 .filter(cartBook -> cartBook.getCart().equals(cart))
+                .filter(i -> i.getStatus() == Status.ACTIVE)
                 .map(itemMapper::entityToDto)
                 .toList();
     }
@@ -85,7 +88,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void deleteById(Long id) {
         Item item = getItemWithDetails(id);
-        itemRepository.delete(item);
+        item.setStatus(Status.DELETED);
+        itemRepository.save(item);
     }
 
     @Override

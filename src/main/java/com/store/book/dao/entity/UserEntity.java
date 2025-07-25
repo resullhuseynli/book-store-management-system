@@ -1,6 +1,7 @@
 package com.store.book.dao.entity;
 
 import com.store.book.enums.Role;
+import com.store.book.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -38,6 +39,10 @@ public class UserEntity implements UserDetails {
 
     @Column(name = "user_email")
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_status")
+    private Status status;
 
     @Column(name = "user_password")
     private String password;
