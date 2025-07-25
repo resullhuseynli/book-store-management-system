@@ -1,0 +1,62 @@
+databaseChangeLog:
+  - changeSet:
+      id: 072525-020-add-status-column
+      author: Resul Huseynli
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: user_status
+                  type: VARCHAR(255)
+                  defaultValue: "ACTIVE"
+
+        - addColumn:
+            tableName: authors
+            columns:
+              - column:
+                  name: author_status
+                  type: VARCHAR(255)
+                  defaultValue: "ACTIVE"
+
+        - addColumn:
+            tableName: books
+            columns:
+              - column:
+                  name: book_status
+                  type: VARCHAR(255)
+                  defaultValue: "ACTIVE"
+
+        - addColumn:
+            tableName: comments
+            columns:
+              - column:
+                  name: comment_status
+                  type: VARCHAR(255)
+                  defaultValue: "ACTIVE"
+
+        - addColumn:
+            tableName: discounts
+            columns:
+              - column:
+                  name: discount_status
+                  type: VARCHAR(255)
+                  defaultValue: "ACTIVE"
+
+        - addColumn:
+            tableName: item
+            columns:
+              - column:
+                  name: item_status
+                  type: VARCHAR(255)
+                  defaultValue: "ACTIVE"
+
+        - addColumn:
+            tableName: publishers
+            columns:
+              - column:
+                  name: publisher_status
+                  type: VARCHAR(255)
+                  defaultValue: "ACTIVE"
+
+                  remarks: Adding status column to each table

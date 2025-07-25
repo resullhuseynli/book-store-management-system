@@ -37,3 +37,5 @@ databaseChangeLog:
       file: db/changelog/072125-018-add-status-column-to-cart.yaml
   - include:
       file: db/changelog/072125-019-add-column-money-to-user.yaml
+  - include:
+      file: db/changelog/072525-020-add-status-column.yaml

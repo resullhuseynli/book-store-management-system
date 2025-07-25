@@ -1,5 +1,6 @@
 package com.store.book.dao.entity;
 
+import com.store.book.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -30,6 +31,10 @@ public class Item {
 
     @Column(name = "item_quantity")
     private Integer quantity;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "item_status")
+    private Status status;
 
     @CreationTimestamp
     @Column(name = "created_at")

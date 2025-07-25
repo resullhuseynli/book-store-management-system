@@ -2,6 +2,7 @@ package com.store.book.dao.entity;
 
 import com.store.book.enums.Genre;
 import com.store.book.enums.Language;
+import com.store.book.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -46,6 +47,10 @@ public class Book {
 
     @Column(name = "book_description")
     private String description;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "book_status")
+    private Status status;
 
     @Column(name = "book_rating", precision = 3, scale = 1)
     private BigDecimal rating;

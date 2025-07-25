@@ -1,5 +1,6 @@
 package com.store.book.dao.entity;
 
+import com.store.book.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,6 +27,10 @@ public class Author {
 
     @Column(name = "author_about_url")
     private String aboutUrl;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "author_status")
+    private Status status;
 
     @CreationTimestamp
     @Column(name = "created_at")

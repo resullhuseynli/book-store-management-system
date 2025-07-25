@@ -1,5 +1,6 @@
 package com.store.book.dao.entity;
 
+import com.store.book.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -34,6 +35,10 @@ public class Discount {
 
     @Column(name = "is_active")
     private boolean isActive;
+
+    @Column(name = "discount_status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @CreationTimestamp
     @Column(name = "created_at")
