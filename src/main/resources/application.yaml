@@ -46,3 +46,6 @@ logging:
     org:
       springframework:
         security: DEBUG
+
+      mongodb:
+        driver: DEBUG
