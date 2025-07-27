@@ -8,6 +8,7 @@ import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
@@ -18,6 +19,8 @@ public interface ProductMapper {
             @Mapping(target = "price", source = "item", qualifiedByName = "calculatePrice")
     })
     ProductModel itemToProduct(Item item);
+
+    List<ProductModel> itemsToProductModel(List<Item> items);
 
     @Named("calculatePrice")
     default BigDecimal calculatePrice(Item item) {

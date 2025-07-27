@@ -8,4 +8,6 @@ public interface BillGeneratorService {
     byte[] generateBillPdf(BillModel bill);
 
     void save(Cart cart);
+
+    byte[] getBillPdf(Long id);
 }
