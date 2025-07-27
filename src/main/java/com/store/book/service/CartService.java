@@ -32,6 +32,7 @@ public class CartService {
     private final ItemService itemService;
     private final MessageSource messageSource;
     private final Locale locale = LocaleContextHolder.getLocale();
+    private final BillGeneratorService billGeneratorService;
 
     public CartDtoResponse get() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -58,6 +59,7 @@ public class CartService {
                     messageSource.getMessage("NotEnoughMoneyErrorMessage", null, locale));
         }
         cart.setStatus(Status.BOUGHT);
+        billGeneratorService.save(cart);
         Cart newCart = new Cart();
         newCart.setUser(user);
         newCart.setStatus(Status.ACTIVE);

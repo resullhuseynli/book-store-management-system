@@ -61,7 +61,7 @@ public class AuthController {
     }
 
     @PostMapping("/money/{id}")
-    public ResponseEntity<String> getMoney(@PathVariable Long id, @RequestBody BigDecimal amount) throws Exception {
+    public ResponseEntity<String> getMoney(@PathVariable Long id, @RequestBody BigDecimal amount) {
         return ResponseEntity.ok().body(customUserDetailsService.sendPaymentRequest(id, amount));
     }
 
