@@ -41,3 +41,12 @@ services:
       - 'KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092'
     depends_on:
       - kafka
+
+  mongo:
+    image: mongo:7
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
