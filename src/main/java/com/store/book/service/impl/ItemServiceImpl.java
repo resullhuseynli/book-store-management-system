@@ -75,6 +75,11 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     public void buyItem(Item item) {
         final Locale locale = LocaleContextHolder.getLocale();
+        Item itemRepo =  itemRepository.findById(item.getId()).orElseThrow(() -> new NotFoundException(
+                messageSource.getMessage("ItemNotFound", null, locale)
+        ));
+        itemRepo.setStatus(Status.BOUGHT);
+        itemRepository.save(itemRepo);
         Book book = item.getBook();
         book.setAmount(book.getAmount() - item.getQuantity());
         if (book.getAmount() <= 0) {
@@ -95,6 +100,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDtoResponse create(ItemDtoRequest entity) {
         Item item = itemMapper.dtoToEntity(entity);
+        item.setStatus(Status.ACTIVE);
         Item saved = itemRepository.save(item);
         return itemMapper.entityToDto(saved);
     }

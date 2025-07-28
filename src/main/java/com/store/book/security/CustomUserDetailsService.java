@@ -10,6 +10,7 @@ import com.store.book.enums.Role;
 import com.store.book.enums.Status;
 import com.store.book.exception.exceptions.UserAlreadyExistException;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -76,13 +77,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new BCryptPasswordEncoder();
     }
 
-    public String sendPaymentRequest(Long userId, BigDecimal amount) throws Exception {
+    @SneakyThrows
+    public String sendPaymentRequest(Long userId, BigDecimal amount) {
+        final Locale locale = LocaleContextHolder.getLocale();
         String requestId = UUID.randomUUID().toString();
         String message = userId + ":" + requestId + ":" + amount;
 
         CompletableFuture<String> future = new CompletableFuture<>();
         responseMap.put(requestId, future);
-
         kafkaTemplate.send("payment-request", message);
 
         try {
@@ -94,8 +96,9 @@ public class CustomUserDetailsService implements UserDetailsService {
             } else {
                 return "Payment Failed";
             }
-        } catch (TimeoutException e) {
-            throw new RuntimeException("Timed out waiting for payment response"); //TODO message source
+        } catch (TimeoutException timeoutException) {
+            throw new TimeoutException(
+                    messageSource.getMessage("TimeOutMessage", null, locale));
         } finally {
             responseMap.remove(requestId);
         }
@@ -121,4 +124,3 @@ public class CustomUserDetailsService implements UserDetailsService {
         userRepository.save(userEntity);
     }
 }
-

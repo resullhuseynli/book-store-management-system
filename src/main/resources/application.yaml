@@ -33,12 +33,24 @@ spring:
     redis:
       host: localhost
       port: 6379
+    mongodb:
+      uri: mongodb://localhost:27017/book_manager_db
 
   config:
     import: optional:classpath:application-secrets.yaml
+
+
 
 logging:
   level:
     org:
       springframework:
-        security: DEBUG
+        security: WARN
+
+      mongodb:
+        driver: WARN
+
+    root: INFO
+
+  file:
+    name: ./logs/app.log
