@@ -50,3 +50,38 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongo
       MONGO_INITDB_ROOT_PASSWORD: mongo
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.0
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.12.0
+    ports:
+      - "5044:5044"
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+#      - /c/Users/user/Desktop/projects/book/logs:/usr/share/logstash/logs
+    depends_on:
+      - elasticsearch
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.12.0
+    user: root
+    volumes:
+      - /c/Users/user/Desktop/projects/book/logs:/logs
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
+    entrypoint: [ "/bin/sh", "-c", "chmod 644 /usr/share/filebeat/filebeat.yml && filebeat -e" ]
+    depends_on:
+      - logstash

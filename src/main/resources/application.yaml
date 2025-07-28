@@ -39,8 +39,6 @@ spring:
   config:
     import: optional:classpath:application-secrets.yaml
 
-
-
 logging:
   level:
     org:
