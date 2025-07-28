@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="LOG_PATH" value="logs" />
+
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.store.book" level="INFO" additivity="false">
+        <appender-ref ref="JsonFileAppender" />
+    </logger>
+
+    <appender name="JsonFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/app.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/app-log-%d{yyyy-MM-dd}.json</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <prettyPrint>true</prettyPrint>
+            <providers>
+                <provider class="net.logstash.logback.composite.loggingevent.MdcJsonProvider">
+                    <fieldNames>
+                        <ip>client_ip</ip>
+                    </fieldNames>
+                </provider>
+                <timestamp fieldName="timestamp"/>
+                <logLevel fieldName="level"/>
+                <threadName fieldName="thread"/>
+                <loggerName fieldName="logger"/>
+                <message/>
+                <stackTrace/>
+            </providers>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="Console"/>
+    </root>
+
+</configuration>

@@ -1,4 +1,4 @@
-package com.store.book.exception.exception_model;
+package com.store.book.exception.constants;
 
 public final class ErrorCode {
 

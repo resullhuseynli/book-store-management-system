@@ -6,8 +6,11 @@ import com.store.book.dao.dto.UserDtoUpdate;
 import com.store.book.dao.entity.UserEntity;
 import com.store.book.security.CustomUserDetailsService;
 import com.store.book.security.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jboss.logging.MDC;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -36,6 +40,7 @@ public class AuthController {
     public ResponseEntity<AuthDtoResponse> login(@Valid @RequestBody AuthDtoRequest request) {
         Locale locale = LocaleContextHolder.getLocale();
         try {
+            log.info("Login Request: {}", request);
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
             );

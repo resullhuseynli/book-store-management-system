@@ -45,7 +45,12 @@ logging:
   level:
     org:
       springframework:
-        security: DEBUG
+        security: WARN
 
       mongodb:
-        driver: DEBUG
+        driver: WARN
+
+    root: INFO
+
+  file:
+    name: ./logs/app.log
