@@ -47,8 +47,8 @@ public class BookController {
         return ResponseEntity.ok(bookService.getBooksByGenre(genre));
     }
 
-    @GetMapping("/public/author")
-    public ResponseEntity<List<BookDtoResponse>> getBooksByAuthor(@RequestParam Long id) {
+    @GetMapping("/public/author/{id}")
+    public ResponseEntity<List<BookDtoResponse>> getBooksByAuthor(@PathVariable Long id) {
         return ResponseEntity.ok(bookService.getBooksByAuthorId(id));
     }
 
@@ -62,7 +62,7 @@ public class BookController {
         return ResponseEntity.ok(bookService.get10MostViewedBooksForToday());
     }
 
-    @GetMapping("/public/favorite-books-list")
+    @GetMapping("/favorite-books-list")
     public ResponseEntity<List<BookDtoResponse>> getFavoriteBooksList() {
         return ResponseEntity.ok(bookService.getFavoriteBooks());
     }

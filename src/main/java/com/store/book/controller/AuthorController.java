@@ -30,22 +30,22 @@ public class AuthorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(authorService.create(request));
     }
 
-    @GetMapping("/all-authors")
+    @GetMapping("/public/all-authors")
     public ResponseEntity<List<Author>> getAllAuthors() {
         return ResponseEntity.ok().body(authorService.getAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/public/{id}")
     public ResponseEntity<Author> getAuthorById(@PathVariable Long id) {
         return ResponseEntity.ok().body(authorService.getById(id));
     }
 
-    @GetMapping
+    @GetMapping("/public")
     public ResponseEntity<List<Author>> getAllAuthorsByName(@RequestParam String name) {
         return ResponseEntity.ok().body(authorService.getAuthorsByName(name));
     }
 
-    @GetMapping("/all-authors-with-page")
+    @GetMapping("/public/all-authors-with-page")
     public ResponseEntity<Page<Author>> getAllAuthorsWithPage(@RequestParam(defaultValue = "0") int page,
                                                               @RequestParam(defaultValue = "10") int size
     ) {
