@@ -43,6 +43,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(
+                                "api/v1/book/public/**",
+                                "api/v1/author/public/**",
+                                "api/v1/comments/public/**",
+                                "api/v1/discounts/public/**",
+                                "api/v1/publisher/public/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",

@@ -30,19 +30,19 @@ public class PublisherController {
         return ResponseEntity.status(HttpStatus.CREATED).body(publisherService.create(request));
     }
 
-    @GetMapping("/with-page")
+    @GetMapping("/public/with-page")
     public Page<Publisher> getPublishersWithPage(@RequestParam(defaultValue = "0") Integer page,
                                                  @RequestParam(defaultValue = "10") Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(publisherService.getAllWithPage(pageable)).getBody();
     }
 
-    @GetMapping
+    @GetMapping("/public")
     public ResponseEntity<List<Publisher>> getAllPublishers() {
         return ResponseEntity.ok().body(publisherService.getAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/public/{id}")
     public ResponseEntity<Publisher> getPublisherById(@PathVariable Long id) {
         return ResponseEntity.ok().body(publisherService.getById(id));
     }

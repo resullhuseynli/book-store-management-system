@@ -47,7 +47,7 @@ public class CoverImageController {
         return ResponseEntity.ok().body("Image uploaded successfully.");
     }
 
-    @GetMapping("/download/{id}")
+    @GetMapping("/public/download/{id}")
     public ResponseEntity<byte[]> getCoverImageById(@PathVariable Long id) throws IOException {
         try {
             return coverImageService.getCoverImage(id);

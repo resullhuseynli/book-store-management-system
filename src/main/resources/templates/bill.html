@@ -1,105 +1,105 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8" />
-    <title>Bill</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f7f7f7;
-            padding: 20px;
-            color: #333;
-        }
+  <meta charset="UTF-8" />
+  <title>Bill</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f7f7f7;
+      padding: 20px;
+      color: #333;
+    }
 
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
 
-        .company-info {
-            max-width: 600px;
-            margin: 0 auto 20px;
-            background: #fff;
-            padding: 15px 25px;
-            border: 1px solid #ccc;
-            font-size: 1.1rem;
-            color: #555;
-        }
+    .company-info {
+      max-width: 600px;
+      margin: 0 auto 20px;
+      background: #fff;
+      padding: 15px 25px;
+      border: 1px solid #ccc;
+      font-size: 1.1rem;
+      color: #555;
+    }
 
-        .company-info p {
-            margin: 6px 0;
-        }
+    .company-info p {
+      margin: 6px 0;
+    }
 
-        table {
-            width: 600px;
-            margin: 0 auto 30px;
-            border-collapse: collapse;
-            background: #fff;
-            border: 1px solid #ccc;
-        }
+    table {
+      width: 600px;
+      margin: 0 auto 30px;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1px solid #ccc;
+    }
 
-        thead {
-            background: #3498db;
-            color: white;
-            font-weight: bold;
-        }
+    thead {
+      background: #3498db;
+      color: white;
+      font-weight: bold;
+    }
 
-        thead th {
-            padding: 12px 15px;
-            text-align: left;
-            border: 1px solid #ccc;
-        }
+    thead th {
+      padding: 12px 15px;
+      text-align: left;
+      border: 1px solid #ccc;
+    }
 
-        tbody tr:nth-child(even) {
-            background: #f1f8ff;
-        }
+    tbody tr:nth-child(even) {
+      background: #f1f8ff;
+    }
 
-        tbody td {
-            padding: 12px 15px;
-            border: 1px solid #ccc;
-        }
+    tbody td {
+      padding: 12px 15px;
+      border: 1px solid #ccc;
+    }
 
-        .total-container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 15px 25px;
-            border: 1px solid #ccc;
-            font-size: 1.3rem;
-            text-align: right;
-            color: #2980b9;
-        }
-    </style>
+    .total-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 15px 25px;
+      border: 1px solid #ccc;
+      font-size: 1.3rem;
+      text-align: right;
+      color: #2980b9;
+    }
+  </style>
 </head>
 <body>
 
 <h1><span th:text="${companyName}">Company Name</span></h1>
 
 <div class="company-info">
-    <p><strong>Company Address:</strong> <span th:text="${companyAddress}">Baku, Azerbaijan</span></p>
-    <p><strong>Date:</strong> <span th:text="${createdDate}">2025-07-26</span></p>
+  <p><strong>Company Address:</strong> <span th:text="${companyAddress}">Baku, Azerbaijan</span></p>
+  <p><strong>Date:</strong> <span th:text="${createdDate}">2025-07-26</span></p>
 </div>
 
 <table>
-    <thead>
-    <tr>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Price</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="item : ${productList}">
-        <td th:text="${item.name}">Product Name</td>
-        <td th:text="${item.amount}">1</td>
-        <td th:text="${#numbers.formatDecimal(item.price, 1, 'COMMA', 2, 'POINT')}">$0.00</td>
-    </tr>
-    </tbody>
+  <thead>
+  <tr>
+    <th>Product</th>
+    <th>Quantity</th>
+    <th>Price</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="item : ${productList}">
+    <td th:text="${item.name}">Product Name</td>
+    <td th:text="${item.amount}">1</td>
+    <td th:text="${#numbers.formatDecimal(item.price, 1, 'COMMA', 2, 'POINT')}">$0.00</td>
+  </tr>
+  </tbody>
 </table>
 
 <div class="total-container">
-    <span><strong>Total: </strong> <span th:text="${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')}">$0.00</span></span>
+  <span><strong>Total: </strong> <span th:text="${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')}">$0.00</span></span>
 </div>
 
 </body>

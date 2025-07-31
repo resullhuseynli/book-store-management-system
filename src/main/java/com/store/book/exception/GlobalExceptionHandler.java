@@ -134,7 +134,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse<String>> handleBadCredentialsException(BadCredentialsException badCredentialsException) {
         log.error(ErrorCode.BAD_CREDENTIALS_ERROR_CODE + ": {}", badCredentialsException.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(badRequest().body(ErrorResponse.<String>builder()
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(badRequest().body(ErrorResponse.<String>builder()
                 .errorCode(BAD_CREDENTIALS_ERROR_CODE)
                 .errorMessage(getLocalizedMessage(BAD_CREDENTIALS_ERROR_MESSAGE))
                 .message(badCredentialsException.getMessage())
@@ -144,7 +144,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserAlreadyExistException.class)
     public ResponseEntity<ErrorResponse<String>> handleUserAlreadyExistException(UserAlreadyExistException userAlreadyExistException) {
         log.error(ErrorCode.USER_ALREADY_EXISTS_ERROR_CODE + ": {}", userAlreadyExistException.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(badRequest().body(ErrorResponse.<String>builder()
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(badRequest().body(ErrorResponse.<String>builder()
                 .errorCode(USER_ALREADY_EXISTS_ERROR_CODE)
                 .errorMessage(getLocalizedMessage(USER_ALREADY_EXISTS_ERROR_MESSAGE))
                 .message(userAlreadyExistException.getMessage())

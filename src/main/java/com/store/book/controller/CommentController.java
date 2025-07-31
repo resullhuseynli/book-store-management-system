@@ -29,12 +29,12 @@ public class CommentController {
         return ResponseEntity.ok(commentService.getAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/public/{id}")
     public ResponseEntity<CommentDtoResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(commentService.getById(id));
     }
 
-    @GetMapping("book")
+    @GetMapping("/public/book")
     public ResponseEntity<List<CommentDtoResponse>> getAllByBookId(@RequestParam Long book) {
         return ResponseEntity.ok(commentService.getCommentsByBookId(book));
     }

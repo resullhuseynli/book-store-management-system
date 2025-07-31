@@ -34,7 +34,7 @@ public class DiscountController {
         return ResponseEntity.ok("Discount added successfully");
     }
 
-    @GetMapping("/active")
+    @GetMapping("/public/active")
     public ResponseEntity<List<DiscountDtoResponse>> getAllActiveDiscounts() {
         return ResponseEntity.ok(discountService.getAllActiveDiscounts());
     }

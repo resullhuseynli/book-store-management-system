@@ -29,7 +29,6 @@
                 </provider>
                 <timestamp fieldName="timestamp"/>
                 <logLevel fieldName="level"/>
-                <threadName fieldName="thread"/>
                 <loggerName fieldName="logger"/>
                 <message/>
                 <stackTrace/>

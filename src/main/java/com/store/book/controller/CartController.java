@@ -27,7 +27,7 @@ public class CartController {
         return ResponseEntity.ok(cartService.buy());
     }
 
-    @PostMapping("/bill/{id}")
+    @GetMapping("/bill/{id}")
     public ResponseEntity<byte[]> getBill(@PathVariable Long id) {
         byte[] pdf = billGeneratorService.getBillPdf(id);
         return ResponseEntity.ok()
